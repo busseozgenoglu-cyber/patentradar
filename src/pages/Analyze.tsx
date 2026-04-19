@@ -29,11 +29,11 @@ export function Analyze() {
       let result;
       
       try {
-        // Try real OpenAI first
+        // Try AI engine first
         const openaiResult = await analyzeWithOpenAI(text);
         result = buildFullResult(openaiResult, text);
       } catch {
-        // Fallback to local AI engine
+        // Fallback to local analysis engine
         await new Promise(resolve => setTimeout(resolve, 2500));
         result = analyzePatent(text);
       }
@@ -145,7 +145,7 @@ export function Analyze() {
               className="absolute inset-0 bg-white/95 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center p-8 z-10"
             >
               <Sparkles className="w-10 h-10 text-emerald-500 animate-pulse mb-4" />
-              <h3 className="text-xl font-bold text-slate-900 mb-2">GPT-4o Mini analiz ediyor...</h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">MarkaRadar analiz ediyor...</h3>
               <p className="text-sm text-slate-500 text-center mb-6">
                 AI marka özelliklerini çıkarıyor, benzer markaları arıyor ve çakışma risk değerlendirmesi yapıyor.
               </p>

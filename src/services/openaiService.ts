@@ -81,14 +81,14 @@ Türkçe yanıt ver.`;
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
-    throw new Error(error.error?.message || `OpenAI API hatası: ${response.status}`);
+    throw new Error(error.error?.message || `Analiz hatası: ${response.status}`);
   }
 
   const data = await response.json();
   const content = data.choices[0]?.message?.content;
   
   if (!content) {
-    throw new Error('OpenAI yanıtı boş');
+    throw new Error('Analiz yanıtı alınamadı');
   }
 
   let jsonStr = content;

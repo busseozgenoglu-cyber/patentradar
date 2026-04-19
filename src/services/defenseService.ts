@@ -62,7 +62,7 @@ Aşağıdaki JSON formatında yanıt ver (TÜM alanlar Türkçe ve detaylı olma
 export async function generateDefense(input: DefenseInput): Promise<DefenseResult> {
   const apiKey = getStoredApiKey();
   if (!apiKey) {
-    throw new Error('Bu özellik için OpenAI API key gereklidir. Lütfen analiz sayfasından API key ekleyin.');
+    throw new Error('Analiz özelliği şu an kullanılamıyor. Lütfen daha sonra tekrar deneyin.');
   }
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -84,14 +84,14 @@ export async function generateDefense(input: DefenseInput): Promise<DefenseResul
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
-    throw new Error(error.error?.message || `OpenAI API hatası: ${response.status}`);
+    throw new Error(error.error?.message || `Analiz hatası: ${response.status}`);
   }
 
   const data = await response.json();
   const content = data.choices[0]?.message?.content;
   
   if (!content) {
-    throw new Error('OpenAI yanıtı boş');
+    throw new Error('Analiz yanıtı alınamadı');
   }
 
   let jsonStr = content;
