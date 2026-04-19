@@ -215,10 +215,16 @@ SADECE JSON formatında yanıt ver:
   return JSON.parse(content) as OpenAIAnalysisResponse;
 }
 
-// Ana export: Claude önce dene (web araması), başarısız olursa OpenAI
+// Ana export: Claude önce dene, hata/bakiye sıfırsa OpenAI'a geç
 export async function analyzeWithOpenAIMain(inputText: string): Promise<OpenAIAnalysisResponse> {
   if (CLAUDE_API_KEY) {
-    return analyzeWithClaude(inputText);
+    try {
+      return await analyzeWithClaude(inputText);
+    } catch (claudeErr: any) {
+      // Bakiye yetersiz veya başka Claude hatası - OpenAI fallback
+      if (!OPENAI_API_KEY) throw claudeErr;
+      console.warn('Claude API hatası, OpenAI fallback kullanılıyor:', claudeErr.message);
+    }
   }
   if (OPENAI_API_KEY) {
     return analyzeWithOpenAI(inputText);

@@ -69,31 +69,39 @@ export async function generateDefense(input: DefenseInput): Promise<DefenseResul
   let responseText = '';
 
   if (CLAUDE_KEY) {
-    // Claude API
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': CLAUDE_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
-        max_tokens: 4000,
-        system: 'Sen Türk marka hukuku uzmanısın. 556 sayılı KHK, marka tescil süreçleri ve itiraz savunma dosyaları konusunda derin bilgiye sahipsin. Sadece JSON formatında yanıt ver.',
-        messages: [{ role: 'user', content: buildPrompt(input) }],
-      }),
-    });
-    if (!resp.ok) {
-      const err = await resp.json().catch(() => ({}));
-      throw new Error((err as any)?.error?.message || `Hata: ${resp.status}`);
+    // Claude API - hata olursa OpenAI'a geç
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': CLAUDE_KEY,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-5',
+          max_tokens: 4000,
+          system: 'Sen Türk marka hukuku uzmanısın. 556 sayılı KHK, marka tescil süreçleri ve itiraz savunma dosyaları konusunda derin bilgiye sahipsin. Sadece JSON formatında yanıt ver.',
+          messages: [{ role: 'user', content: buildPrompt(input) }],
+        }),
+      });
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        if (!OPENAI_KEY) throw new Error((err as any)?.error?.message || `Hata: ${resp.status}`);
+        console.warn('Claude API hatası, OpenAI fallback...');
+      } else {
+        const data = await resp.json();
+        for (const block of (data.content || [])) {
+          if (block.type === 'text') responseText += block.text;
+        }
+      }
+    } catch (e) {
+      if (!OPENAI_KEY) throw e;
+      console.warn('Claude hatası, OpenAI fallback...');
     }
-    const data = await resp.json();
-    for (const block of (data.content || [])) {
-      if (block.type === 'text') responseText += block.text;
-    }
-  } else {
+  }
+  if (!responseText && OPENAI_KEY) {
     // OpenAI fallback
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
