@@ -60,46 +60,76 @@ Aşağıdaki JSON formatında yanıt ver (TÜM alanlar Türkçe ve detaylı olma
 }
 
 export async function generateDefense(input: DefenseInput): Promise<DefenseResult> {
-  const apiKey = getStoredApiKey();
-  if (!apiKey) {
-    throw new Error('Analiz özelliği şu an kullanılamıyor. Lütfen daha sonra tekrar deneyin.');
+  const CLAUDE_KEY = import.meta.env.VITE_CLAUDE_API_KEY || '';
+  const OPENAI_KEY = import.meta.env.VITE_OPENAI_API_KEY || '';
+
+  if (!CLAUDE_KEY && !OPENAI_KEY) {
+    throw new Error('Savunma özelliği şu an kullanılamıyor. Lütfen daha sonra tekrar deneyin.');
   }
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o',
-      messages: [
-        { role: 'system', content: 'Sen Türk marka hukuku uzmanısın. 556 sayılı KHK, marka tescil süreçleri ve itiraz savunma dosyaları konusunda derin bilgiye sahipsin.' },
-        { role: 'user', content: buildPrompt(input) }
-      ],
-      temperature: 0.4,
-      max_tokens: 4000,
-    }),
-  });
+  let responseText = '';
 
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.error?.message || `Analiz hatası: ${response.status}`);
+  if (CLAUDE_KEY) {
+    // Claude API
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': CLAUDE_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-5',
+        max_tokens: 4000,
+        system: 'Sen Türk marka hukuku uzmanısın. 556 sayılı KHK, marka tescil süreçleri ve itiraz savunma dosyaları konusunda derin bilgiye sahipsin. Sadece JSON formatında yanıt ver.',
+        messages: [{ role: 'user', content: buildPrompt(input) }],
+      }),
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error((err as any)?.error?.message || `Hata: ${resp.status}`);
+    }
+    const data = await resp.json();
+    for (const block of (data.content || [])) {
+      if (block.type === 'text') responseText += block.text;
+    }
+  } else {
+    // OpenAI fallback
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${OPENAI_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        messages: [
+          { role: 'system', content: 'Sen Türk marka hukuku uzmanısın. 556 sayılı KHK, marka tescil süreçleri ve itiraz savunma dosyaları konusunda derin bilgiye sahipsin.' },
+          { role: 'user', content: buildPrompt(input) }
+        ],
+        temperature: 0.4,
+        max_tokens: 4000,
+        response_format: { type: 'json_object' },
+      }),
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error((err as any)?.error?.message || `Hata: ${resp.status}`);
+    }
+    const data = await resp.json();
+    responseText = data.choices[0]?.message?.content || '';
   }
 
-  const data = await response.json();
-  const content = data.choices[0]?.message?.content;
-  
-  if (!content) {
-    throw new Error('Analiz yanıtı alınamadı');
-  }
+  if (!responseText) throw new Error('Savunma yanıtı alınamadı');
 
-  let jsonStr = content;
-  const codeBlockMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (codeBlockMatch) {
-    jsonStr = codeBlockMatch[1].trim();
-  }
-  
+  // JSON parse
+  const codeBlockMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)```/);
+  let jsonStr = codeBlockMatch ? codeBlockMatch[1].trim() : responseText.trim();
+  const s = jsonStr.indexOf('{');
+  const e = jsonStr.lastIndexOf('}');
+  if (s !== -1 && e !== -1) jsonStr = jsonStr.slice(s, e + 1);
+
   const parsed: DefenseResult = JSON.parse(jsonStr);
   parsed.createdAt = new Date().toISOString();
   return parsed;

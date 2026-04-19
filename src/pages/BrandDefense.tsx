@@ -45,7 +45,6 @@ export function BrandDefense() {
 
   const isValid = form.brandName.length >= 2 && 
     form.sector.length > 0 && 
-    form.activityDescription.length >= 30 &&
     form.opponentBrand.length >= 2 &&
     form.objectionReasons.length > 0;
 
