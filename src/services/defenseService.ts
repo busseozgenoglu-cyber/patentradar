@@ -1,4 +1,3 @@
-import { getStoredApiKey } from './openaiService';
 
 export interface DefenseInput {
   brandName: string;
