@@ -14,11 +14,11 @@ export function Analyze() {
   const navigate = useNavigate();
 
   const charCount = text.length;
-  const isValid = charCount >= 50;
+  const isValid = charCount >= 10;
 
   const handleAnalyze = useCallback(async () => {
     if (!isValid) {
-      setError('Lütfen daha detaylı bir açıklama yazın (en az 50 karakter).');
+      setError('Lütfen marka adınızı ve sektörünüzü yazın.');
       return;
     }
     

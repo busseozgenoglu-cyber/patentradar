@@ -28,65 +28,122 @@ interface OpenAIAnalysisResponse {
 }
 
 export async function analyzeWithOpenAI(inputText: string): Promise<OpenAIAnalysisResponse> {
-  const systemPrompt = `Sen MarkaRadar'ın profesyonel bir marka çakışma analisti ve risk değerlendirme uzmanısın. 
-Görevin kullanıcının marka adı, sektörü ve faaliyet alanlarını analiz ederek mevcut markalarla çakışma riskini değerlendirmek.
+  const systemPrompt = `Sen MarkaRadar'ın uzman marka çakışma analistisın. Kullanıcının verdiği marka adını ve sektörü web'de ve marka veritabanlarında gerçek zamanlı araştırarak kapsamlı çakışma riski analizi yapıyorsun.
 
-Türkçe yanıt ver. Aşağıdaki JSON formatında yanıt döndür:
+ARAŞTIRMA ADIMLARI:
+1. Marka adını ve sektörü tespit et
+2. Web aramasıyla şunları araştır:
+   - Türkiye'de aynı veya benzer isimde tescilli/faaliyet gösteren markalar (TÜRKPATENT, Ticaret Sicili)
+   - Aynı sektörde Türkiye'de aktif şirketler, e-ticaret siteleri, sosyal medya hesapları
+   - Fonetik olarak benzer isimler (telaffuz benzerliği hukuki risk yaratır)
+   - Uluslararası markalar (EUIPO, WIPO kapsamında Türkiye'de koruma altında olanlar)
+   - Nice sınıflandırmasına göre aynı sınıfta tescilli markalar
+3. Bulguları analiz ederek risk skoru hesapla
+
+Yalnızca aşağıdaki JSON formatında yanıt ver, başka hiçbir şey yazma, markdown kullanma:
 
 {
-  "product_summary": "Markanın kısa özeti (2-3 cümle)",
-  "detected_features": ["özellik1", "özellik2", ...],
-  "search_keywords": ["anahtar1", "anahtar2", ...],
+  "product_summary": "Markanın 3-4 cümlelik detaylı özeti: ne yapıyor, hangi sektör, hedef kitle, iş modeli",
+  "detected_features": ["özellik1", "özellik2", "özellik3", "özellik4"],
+  "search_keywords": ["araştırılan anahtar1", "araştırılan anahtar2", "araştırılan anahtar3", "araştırılan anahtar4", "araştırılan anahtar5"],
   "risk_score": 0-100 arası sayı,
   "risk_level": "low" veya "medium" veya "high",
-  "summary_comment": "Risk değerlendirmesi özeti (3-4 cümle)",
+  "summary_comment": "Araştırma bulgularına dayalı 4-5 cümlelik risk değerlendirmesi. Hangi markaların neden risk oluşturduğunu, hukuki durumu ve önerilen adımları açıkla.",
   "top_matches": [
     {
-      "title": "Benzeyen markanın adı ve sektörü",
-      "patent_number": "TMXXXX/XXXXX formatında dummy numara",
-      "summary": "Markanın kısa açıklaması",
+      "title": "Markanın tam adı — Şirket/İşletme Adı",
+      "patent_number": "Gerçek tescil numarası varsa yaz, yoksa 'Doğrulanamadı' yaz",
+      "summary": "Bu markanın ne yaptığı, nerede aktif olduğu ve neden çakışma riski oluşturduğu (2-3 cümle)",
       "similarity_score": 0-100,
-      "match_reasons": ["neden1", "neden2"],
-      "category": "sektör adı"
+      "match_reasons": ["Fonetik/yazım benzerliği açıklaması", "Sektör örtüşmesi açıklaması", "Hedef kitle ve pazar benzerliği"],
+      "category": "Nice Sınıf XX - Sektör Adı"
     }
   ],
-  "risk_factors": ["risk1", "risk2", "risk3"],
-  "uniqueness_suggestions": ["öneri1", "öneri2", "öneri3", "öneri4", "öneri5"]
+  "risk_factors": [
+    "Risk 1: Hangi marka, ne tür hukuki risk (tescil çakışması, itiraz hakkı vb.)",
+    "Risk 2: Pazar ve ticari çakışma riski detayı",
+    "Risk 3: Tüketici karışıklığı ve itibar riski"
+  ],
+  "uniqueness_suggestions": [
+    "Öneri 1: Somut isim değişikliği veya farklılaşma önerisi",
+    "Öneri 2: Hangi Nice sınıflarında başvuru yapılmalı",
+    "Öneri 3: Coğrafi veya sektörel niş strateji",
+    "Öneri 4: Marka koruması için acil adımlar",
+    "Öneri 5: TÜRKPATENT başvuru süreci önerisi"
+  ]
 }
 
-Risk skoru şu şekilde belirlenir:
-- 70-100 (high): Aynı veya çok benzer isimli markalar aynı sektörde var
-- 40-69 (medium): Benzer sektör ve kısmi çakışma var
-- 0-39 (low): Düşük çakışma riski
+Risk skoru kriterleri:
+- 70-100 (high): Aynı/fonetik benzer isimde, aynı sektörde tescilli veya aktif marka var
+- 40-69 (medium): Benzer isim veya kısmen örtüşen sektörde markalar mevcut
+- 0-39 (low): Düşük çakışma riski, yeterince özgün
 
-Gerçek varolan markaları referans al. Starbucks, Nike, Apple, Getir, Trendyol, Hepsiburada, Eti, LC Waikiki, Mavi, Koton, Coca-Cola, Amazon, Netflix gibi bilinen markaları kullan.
-Türkçe yanıt ver.`;
+Araştırmana dayalı gerçek markalar ve bulgular yaz. Hayali tescil numarası veya marka uydurma.`;
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  // Step 1: Web araması ile gerçek zamanlı araştırma
+  let webSearchContext = '';
+  try {
+    const searchResponse = await fetch('https://api.openai.com/v1/responses', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        tools: [{ type: 'web_search_preview' }],
+        input: `Türkiye marka çakışma araştırması: "${inputText}"\n\nAraştır:\n1. Türkiye'de aynı/benzer isimde markalar ve şirketler\n2. TÜRKPATENT'te bu sektörde benzer tescilli markalar\n3. Aynı sektörde Türkiye'de faaliyet gösteren önemli markalar\n4. Bu isimle çakışabilecek uluslararası markalar\n\nBulgularını Türkçe özetle.`,
+      }),
+    });
+
+    if (searchResponse.ok) {
+      const searchData = await searchResponse.json();
+      if (searchData.output) {
+        for (const block of searchData.output) {
+          if (block.type === 'message' && block.content) {
+            for (const content of block.content) {
+              if (content.type === 'output_text' && content.text) {
+                webSearchContext = content.text;
+              }
+            }
+          }
+        }
+      }
+    }
+  } catch {
+    // Web search failed, continue with knowledge-based analysis
+  }
+
+  // Step 2: Araştırma bulgularıyla kapsamlı analiz
+  const analysisResponse = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${API_KEY}`,
     },
     body: JSON.stringify({
-      model: 'gpt-4o-mini',
+      model: 'gpt-4o',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: `Aşağıdaki marka tanımını analiz et:\n\n${inputText}` }
+        {
+          role: 'user',
+          content: `Analiz edilecek marka:\n${inputText}\n\n${webSearchContext ? `Web araştırması bulguları:\n${webSearchContext}\n\nBu bulgulara dayanarak` : 'Bilgine dayanarak'} JSON formatında kapsamlı çakışma analizi yap.`,
+        }
       ],
-      temperature: 0.3,
-      max_tokens: 2000,
+      temperature: 0.2,
+      max_tokens: 3000,
+      response_format: { type: 'json_object' },
     }),
   });
 
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.error?.message || `Analiz hatası: ${response.status}`);
+  if (!analysisResponse.ok) {
+    const error = await analysisResponse.json().catch(() => ({}));
+    throw new Error((error as any).error?.message || `Analiz hatası: ${analysisResponse.status}`);
   }
 
-  const data = await response.json();
+  const data = await analysisResponse.json();
   const content = data.choices[0]?.message?.content;
-  
+
   if (!content) {
     throw new Error('Analiz yanıtı alınamadı');
   }
@@ -96,7 +153,7 @@ Türkçe yanıt ver.`;
   if (codeBlockMatch) {
     jsonStr = codeBlockMatch[1].trim();
   }
-  
+
   const parsed: OpenAIAnalysisResponse = JSON.parse(jsonStr);
   return parsed;
 }
