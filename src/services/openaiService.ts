@@ -141,49 +141,51 @@ Araştırma sonuçlarına dayanarak SADECE şu JSON formatında yanıt ver:
   return parsed;
 }
 
-// OpenAI fallback (web araması yok ama bilgi tabanı kullanır)
+// OpenAI - gpt-4o-search-preview ile gerçek web araması
 async function analyzeWithOpenAI(inputText: string): Promise<OpenAIAnalysisResponse> {
-  const systemPrompt = `Sen MarkaRadar'ın uzman marka çakışma analistisın. Kullanıcının verdiği marka adını ve sektörü bilgi tabanın ve eğitim verilerin doğrultusunda kapsamlı şekilde analiz ediyorsun.
+  const systemPrompt = `Sen MarkaRadar'ın uzman marka çakışma analistisın. Web'de gerçek zamanlı arama yaparak kullanıcının markasını analiz ediyorsun.
 
-Şunları değerlendir:
-1. Türkiye'de aynı/benzer isimde bilinen markalar ve işletmeler
-2. Fonetik benzerlik riski
-3. Sektör çakışması
-4. Uluslararası marka riskleri
-5. Nice sınıflandırması
+Şunları web'de ara ve analiz et:
+1. Türkiye'de bu marka adıyla veya fonetik benzer isimde aktif işletmeler, şirketler
+2. Google'da, sosyal medyada, e-ticarette bu isimle ilgili sonuçlar  
+3. TÜRKPATENT'te benzer tescilli markalar
+4. Aynı sektörde Türkiye'deki rakip markalar
+5. Uluslararası benzer markalar
 
-SADECE JSON formatında yanıt ver:
+SADECE JSON formatında yanıt ver, başka hiçbir şey yazma:
 
 {
   "product_summary": "Markanın 3-4 cümlelik detaylı özeti",
   "detected_features": ["özellik1", "özellik2", "özellik3"],
-  "search_keywords": ["anahtar1", "anahtar2", "anahtar3", "anahtar4"],
-  "risk_score": 65,
-  "risk_level": "medium",
-  "summary_comment": "4-5 cümlelik detaylı risk değerlendirmesi, spesifik markaları ve riskleri açıkla",
+  "search_keywords": ["arama terimi1", "arama terimi2", "arama terimi3", "arama terimi4"],
+  "risk_score": 75,
+  "risk_level": "high",
+  "summary_comment": "Web araması bulgularına dayalı 5-6 cümlelik somut risk değerlendirmesi. Hangi gerçek markalar bulundu, nerede aktifler, neden risk oluşturdukları.",
   "top_matches": [
     {
-      "title": "Gerçek marka adı — Şirket Adı",
-      "patent_number": "Doğrulanamadı",
-      "summary": "Bu markanın faaliyeti ve çakışma nedeni (2-3 cümle)",
-      "similarity_score": 75,
-      "match_reasons": ["İsim benzerliği detayı", "Sektör örtüşmesi", "Pazar benzerliği"],
-      "category": "Nice Sınıf XX - Sektör"
+      "title": "Gerçek bulunan markanın tam adı — Şirket/İşletme Adı",
+      "patent_number": "Gerçek numara varsa yaz, yoksa 'Web'de tespit edildi, tescil doğrulanamadı'",
+      "summary": "Bu markanın ne yaptığı, nerede aktif olduğu, web'de nerede bulunduğu ve neden çakışma riski oluşturduğu",
+      "similarity_score": 85,
+      "match_reasons": ["İsim/fonetik benzerlik detayı", "Sektör örtüşmesi detayı", "Coğrafi/pazar örtüşmesi"],
+      "category": "Nice Sınıf 44 - Güzellik ve Kişisel Bakım Hizmetleri"
     }
   ],
   "risk_factors": [
-    "Risk 1: Somut marka ve hukuki risk",
-    "Risk 2: Pazar çakışması",
-    "Risk 3: Tüketici karışıklığı"
+    "Risk 1: [Gerçek marka adı] — spesifik hukuki risk açıklaması",
+    "Risk 2: Pazar ve ticari çakışma detayı",
+    "Risk 3: Tüketici karışıklığı riski somut senaryo"
   ],
   "uniqueness_suggestions": [
-    "Öneri 1: Somut alternatif",
+    "Öneri 1: Somut alternatif isim önerisi",
     "Öneri 2: Nice sınıfı stratejisi",
-    "Öneri 3: Coğrafi strateji",
-    "Öneri 4: TÜRKPATENT adımları",
-    "Öneri 5: Uzun vadeli strateji"
+    "Öneri 3: Coğrafi/sektörel niş strateji",
+    "Öneri 4: TÜRKPATENT başvuru adımları",
+    "Öneri 5: Uzun vadeli marka stratejisi"
   ]
-}`;
+}
+
+ÖNEMLİ: Gerçekte bulunan markaları yaz. 'XYZ', 'ABC' gibi uydurma isimler kullanma.`;
 
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -192,14 +194,14 @@ SADECE JSON formatında yanıt ver:
       'Authorization': `Bearer ${OPENAI_API_KEY}`,
     },
     body: JSON.stringify({
-      model: 'gpt-4o',
+      model: 'gpt-4o-search-preview',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: `Şu marka için kapsamlı çakışma analizi yap:\n\n${inputText}` }
+        { role: 'user', content: `Şu marka için web'de araştırma yaparak kapsamlı çakışma analizi hazırla:
+
+${inputText}` }
       ],
-      temperature: 0.2,
       max_tokens: 3000,
-      response_format: { type: 'json_object' },
     }),
   });
 
@@ -209,10 +211,17 @@ SADECE JSON formatında yanıt ver:
   }
 
   const data = await response.json();
-  const content = data.choices[0]?.message?.content;
-  if (!content) throw new Error('Analiz yanıtı alınamadı');
+  const rawContent = data.choices[0]?.message?.content;
+  if (!rawContent) throw new Error('Analiz yanıtı alınamadı');
 
-  return JSON.parse(content) as OpenAIAnalysisResponse;
+  // JSON çıkar
+  const codeMatch = rawContent.match(/```(?:json)?\s*([\s\S]*?)```/);
+  let jsonStr = codeMatch ? codeMatch[1].trim() : rawContent.trim();
+  const s = jsonStr.indexOf('{');
+  const e = jsonStr.lastIndexOf('}');
+  if (s !== -1 && e !== -1) jsonStr = jsonStr.slice(s, e + 1);
+
+  return JSON.parse(jsonStr) as OpenAIAnalysisResponse;
 }
 
 // Ana export: Claude önce dene, hata/bakiye sıfırsa OpenAI'a geç
