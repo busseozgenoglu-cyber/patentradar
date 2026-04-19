@@ -1,0 +1,290 @@
+import type { PatentRecord } from '@/types';
+
+export const mockPatents: PatentRecord[] = [
+  {
+    id: '1',
+    title: 'Apple (Elektronik, Yazılım, Telekomünikasyon)',
+    patentNumber: 'TM1998/00001',
+    abstract: 'Apple Inc. tarafından tescilli, elektronik cihazlar, yazılım hizmetleri ve telekomünikasyon alanlarında kullanılan uluslararası marka. iPhone, MacBook, iPad ve App Store gibi ürün/hizmet grupları altında tescillidir. Her türlü elektronik cihaz, bilgisayar yazılımı ve perakende hizmet kapsamında geniş koruma alanına sahiptir.',
+    category: 'elektronik',
+    features: ['telefon', 'bilgisayar', 'yazılım', 'perakende', 'app store'],
+    keywords: ['apple', 'elektronik', 'yazılım', 'telefon', 'bilgisayar', 'app'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'elektronik_marka'
+  },
+  {
+    id: '2',
+    title: 'Nike (Spor Giyim, Ayakkabı, Ekipman)',
+    patentNumber: 'TM1985/00002',
+    abstract: 'Nike Inc. tarafından tescilli, spor giyim, ayakkabı ve spor ekipmanları alanında faaliyet gösteren dünya çapında bilinen marka. "Just Do It" sloganı ve "Swoosh" logosu ile tanınır. Spor giyim, koşu ayakkabıları, spor aksesuarları ve fitness ekipmanları kapsamında korunmaktadır.',
+    category: 'giyim',
+    features: ['spor giyim', 'ayakkabı', 'spor ekipman', 'logo', 'slogan'],
+    keywords: ['nike', 'spor', 'giyim', 'ayakkabı', 'koşu', 'fitness'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'giyim_marka'
+  },
+  {
+    id: '3',
+    title: 'Getir (Mobil Uygulama, Lojistik, Perakende)',
+    patentNumber: 'TM2015/00003',
+    abstract: 'Getir tarafından tescilli, hızlı teslimat ve perakende hizmetleri sunan mobil uygulama tabanlı marka. "Dakikalar içinde kapınızda" konseptiyle market ürünleri, restoran yemekleri ve kargo hizmetleri sunar. Mobil uygulama, lojistik ve perakende alanlarında tescillidir.',
+    category: 'teknoloji',
+    features: ['mobil uygulama', 'hızlı teslimat', 'market', 'lojistik', 'perakende'],
+    keywords: ['getir', 'teslimat', 'market', 'mobil', 'hızlı', 'perakende'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'teknoloji_marka'
+  },
+  {
+    id: '4',
+    title: 'Trendyol (E-Ticaret, Perakende, Fintech)',
+    patentNumber: 'TM2010/00004',
+    abstract: 'Trendyol tarafından tescilli, e-ticaret platformu ve dijital perakende hizmetleri markası. Giyim, elektronik, ev eşyası ve kozmetik gibi geniş ürün yelpazesi sunar. Trendyol Go, Trendyol Express ve Trendyol Fintech alt markaları bulunur.',
+    category: 'e-ticaret',
+    features: ['e-ticaret', 'perakende', 'mobil app', 'ödeme sistemi', 'lojistik'],
+    keywords: ['trendyol', 'e-ticaret', 'alışveriş', 'online', 'perakende'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'eticaret_marka'
+  },
+  {
+    id: '5',
+    title: 'Hepsiburada (E-Ticaret, Dijital Hizmetler)',
+    patentNumber: 'TM2008/00005',
+    abstract: 'Hepsiburada tarafından tescilli, Türkiye\'nin önde gelen e-ticaret platformu markası. Elektronik, ev yaşam, kozmetik, süpermarket ve daha fazlası için online alışveriş hizmeti sunar. Hepsiburada Premium ve Hepsipay alt markaları mevcuttur.',
+    category: 'e-ticaret',
+    features: ['e-ticaret', 'online alışveriş', 'elektronik', 'süpermarket', 'dijital cüzdan'],
+    keywords: ['hepsiburada', 'e-ticaret', 'alışveriş', 'online', 'elektronik'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'eticaret_marka'
+  },
+  {
+    id: '6',
+    title: 'Eti (Gıda, Şekerleme, Bisküvi)',
+    patentNumber: 'TM1961/00006',
+    abstract: 'Eti tarafından tescilli, Türkiye\'nin en köklü gıda markalarından biri. Bisküvi, çikolata, gofret, kraker ve kek kategorilerinde yüzlerce ürün. Eti Browni Intense, Eti Canga, Eti Tutku gibi ikonik ürünleriyle tanınır. Gıda üretimi ve perakende satış alanlarında korunmaktadır.',
+    category: 'gida',
+    features: ['bisküvi', 'çikolata', 'gofret', 'gıda', 'şekerleme'],
+    keywords: ['eti', 'bisküvi', 'çikolata', 'gıda', 'şekerleme', 'gofret'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'gida_marka'
+  },
+  {
+    id: '7',
+    title: 'Lav (Cam, Mutfak, Sofra)',
+    patentNumber: 'TM1934/00007',
+    abstract: 'Lav tarafından tescilli, cam üretimi ve mutfak/sofra eşyaları alanında faaliyet gösteren köklü Türk markası. Bardak, tabak, kadeh, saklama kabı ve dekoratif cam ürünleri üretir. Lav cam üfleme tekniği ile ünlüdür. Ev yaşam ve mutfak kategorilerinde geniş tescil alanına sahiptir.',
+    category: 'ev_yasam',
+    features: ['cam', 'bardak', 'mutfak', 'sofra', 'saklama'],
+    keywords: ['lav', 'cam', 'bardak', 'mutfak', 'sofra', 'tabak'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'ev_yasam_marka'
+  },
+  {
+    id: '8',
+    title: 'Arcelik (Beyaz Eşya, Elektronik, Ev Aletleri)',
+    patentNumber: 'TM1955/00008',
+    abstract: 'Arçelik tarafından tescilli, beyaz eşya, elektrikli ev aletleri ve tüketici elektroniği alanında dünya devi Türk markası. Buzdolabı, çamaşır makinesi, bulaşık makinesi, fırın ve küçük ev aletleri üretir. Beko, Grundig ve Altus alt markaları bulunur.',
+    category: 'elektronik',
+    features: ['beyaz eşya', 'ev aletleri', 'elektronik', 'mutfak', 'ankastre'],
+    keywords: ['arçelik', 'beyaz eşya', 'buzdolabı', 'çamaşır makinesi', 'ev'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'elektronik_marka'
+  },
+  {
+    id: '9',
+    title: 'LC Waikiki (Tekstil, Giyim, Perakende)',
+    patentNumber: 'TM1988/00009',
+    abstract: 'LC Waikiki tarafından tescilli, hazır giyim ve tekstil perakende devi. Kadın, erkek, çocuk ve bebek giyim ürünleri sunar. Uygun fiyatlı moda konseptiyle 50+ ülkede mağaza ağı bulunur. Tekstil üretimi, perakende satış ve moda tasarımı alanlarında tescillidir.',
+    category: 'giyim',
+    features: ['hazır giyim', 'tekstil', 'moda', 'perakende', 'mağaza'],
+    keywords: ['lc waikiki', 'giyim', 'tekstil', 'moda', 'perakende'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'giyim_marka'
+  },
+  {
+    id: '10',
+    title: 'n11 (E-Ticaret, Online Alışveriş)',
+    patentNumber: 'TM2012/00010',
+    abstract: 'n11 tarafından tescilli, e-ticaret pazaryeri platformu. Elektronik, moda, ev yaşam, kozmetik ve süpermarket kategorilerinde binlerce satıcıyı müşterilerle buluşturur. n11.com üzerinden faaliyet gösterir. Dijital pazaryeri ve online perakende alanlarında korunmaktadır.',
+    category: 'e-ticaret',
+    features: ['e-ticaret', 'pazaryeri', 'online alışveriş', 'elektronik', 'moda'],
+    keywords: ['n11', 'e-ticaret', 'pazaryeri', 'alışveriş', 'online'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'eticaret_marka'
+  },
+  {
+    id: '11',
+    title: 'Pinar (Süt, Gıda, İçecek)',
+    patentNumber: 'TM1973/00011',
+    abstract: 'Pınar tarafından tescilli, süt ve süt ürünleri, meyve suyu, su ve gıda ürünleri alanında faaliyet gösteren köklü Türk markası. Pınar Süt, Pınar Su, Pınar Meyve Suyu gibi alt markaları bulunur. Gıda üretimi, içecek ve perakende alanlarında geniş tescil alanına sahiptir.',
+    category: 'gida',
+    features: ['süt', 'süt ürünleri', 'meyve suyu', 'su', 'gıda'],
+    keywords: ['pınar', 'süt', 'gıda', 'içecek', 'meyve suyu', 'peynir'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'gida_marka'
+  },
+  {
+    id: '12',
+    title: 'Yatas (Yatak, Mobilya, Ev Tekstili)',
+    patentNumber: 'TM1976/00012',
+    abstract: 'Yataş tarafından tescilli, yatak, mobilya ve ev tekstili alanında lider Türk markası. Yatak, baza, başlık, koltuk ve ev tekstili ürünleri üretir. Yataş Bedding, Enza Home ve Yataş Sleep Lab alt markaları bulunur. Mobilya üretimi ve perakende satış alanlarında korunmaktadır.',
+    category: 'mobilya',
+    features: ['yatak', 'mobilya', 'ev tekstili', 'baza', 'koltuk'],
+    keywords: ['yataş', 'yatak', 'mobilya', 'ev tekstili', 'baza', 'koltuk'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'mobilya_marka'
+  },
+  {
+    id: '13',
+    title: 'Beko (Elektronik, Beyaz Eşya)',
+    patentNumber: 'TM1967/00013',
+    abstract: 'Beko tarafından tescilli, tüketici elektroniği ve beyaz eşya alanında dünya çapında tanınan Türk markası. 140+ ülkede faaliyet gösterir. Televizyon, buzdolabı, çamaşır makinesi, kurutma makinesi üretir. UEFA EURO resmi sponsorlarından biridir.',
+    category: 'elektronik',
+    features: ['televizyon', 'beyaz eşya', 'elektronik', 'ev aletleri'],
+    keywords: ['beko', 'televizyon', 'beyaz eşya', 'elektronik', 'ev'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'elektronik_marka'
+  },
+  {
+    id: '14',
+    title: 'Koton (Tekstil, Moda, Perakende)',
+    patentNumber: 'TM1995/00014',
+    abstract: 'Koton tarafından tescilli, hazır giyim ve moda perakende markası. Kadın, erkek ve çocuk giyim koleksiyonları sunar. Türkiye ve yurtdışında yüzlerce mağazası bulunur. Tekstil, moda tasarımı ve perakende satış alanlarında korunmaktadır.',
+    category: 'giyim',
+    features: ['hazır giyim', 'moda', 'tekstil', 'perakende', 'mağaza'],
+    keywords: ['koton', 'giyim', 'moda', 'tekstil', 'perakende'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'giyim_marka'
+  },
+  {
+    id: '15',
+    title: 'Mavi (Tekstil, Kot Giyim, Moda)',
+    patentNumber: 'TM1991/00015',
+    abstract: 'Mavi tarafından tescilli, kot giyim ve denim odaklı moda markası. Kot pantolon, ceket, gömlek ve aksesuar ürünleri sunar. Türkiye\'nin en çok tercih edilen kot markasıdır. ABD, Kanada ve Avrupa\'da da mağazaları bulunur. Tekstil ve moda alanlarında tescillidir.',
+    category: 'giyim',
+    features: ['kot', 'denim', 'giyim', 'moda', 'tekstil'],
+    keywords: ['mavi', 'kot', 'denim', 'giyim', 'moda', 'pantolon'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'giyim_marka'
+  },
+  {
+    id: '16',
+    title: 'Ulker (Gıda, Çikolata, Bisküvi)',
+    patentNumber: 'TM1944/00016',
+    abstract: 'Ülker tarafından tescilli, Türkiye\'nin en büyük gıda şirketlerinden birinin ana markası. Çikolata, bisküvi, gofret, cips ve süt ürünleri üretir. Ülker Çikolata, Ülker Bisküvi, Ülker Gofret gibi alt markaları bulunur. Gıda üretimi ve perakende alanlarında geniş koruma alanına sahiptir.',
+    category: 'gida',
+    features: ['çikolata', 'bisküvi', 'gıda', 'gofret', 'şekerleme'],
+    keywords: ['üler', 'çikolata', 'bisküvi', 'gıda', 'gofret', 'şeker'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'gida_marka'
+  },
+  {
+    id: '17',
+    title: 'Vestel (Elektronik, Beyaz Eşya)',
+    patentNumber: 'TM1984/00017',
+    abstract: 'Vestel tarafından tescilli, tüketici elektroniği, beyaz eşya ve dijital ürünler alanında faaliyet gösteren Türk markası. Televizyon, beyaz eşya, klima, küçük ev aletleri ve akıllı telefon üretir. Vestel City mağazaları ile perakende satış da yapar.',
+    category: 'elektronik',
+    features: ['televizyon', 'beyaz eşya', 'klima', 'elektronik', 'telefon'],
+    keywords: ['vestel', 'televizyon', 'beyaz eşya', 'elektronik', 'klima'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'elektronik_marka'
+  },
+  {
+    id: '18',
+    title: 'Coca-Cola (İçecek, Gıda)',
+    patentNumber: 'TM1892/00018',
+    abstract: 'The Coca-Cola Company tarafından tescilli, dünyanın en değerli markalarından biri. Gazlı içecek, meyve suyu, spor içeceği ve şişelenmiş su üretir. Coca-Cola, Fanta, Sprite, Minute Maid gibi alt markaları bulunur. Gıda ve içecek alanlarında küresel koruma alanına sahiptir.',
+    category: 'gida',
+    features: ['içecek', 'gazlı içecek', 'meşrubat', 'gıda', 'şişe'],
+    keywords: ['coca cola', 'içecek', 'gazlı', 'kola', 'meşrubat'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'gida_marka'
+  },
+  {
+    id: '19',
+    title: 'Amazon (E-Ticaret, Bulut, Teknoloji)',
+    patentNumber: 'TM1994/00019',
+    abstract: 'Amazon.com Inc. tarafından tescilli, dünyanın en büyük e-ticaret ve bulut bilişim şirketi. Amazon.com, Amazon Web Services (AWS), Amazon Prime, Kindle ve Alexa alt markaları bulunur. E-ticaret, dijital içerik, yapay zeka ve bulut bilişim alanlarında küresel tescile sahiptir.',
+    category: 'e-ticaret',
+    features: ['e-ticaret', 'bulut bilişim', 'yapay zeka', 'dijital içerik', 'lojistik'],
+    keywords: ['amazon', 'e-ticaret', 'alışveriş', 'bulut', 'prime'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'eticaret_marka'
+  },
+  {
+    id: '20',
+    title: 'Starbucks (Kahve, Gıda, Perakende)',
+    patentNumber: 'TM1971/00020',
+    abstract: 'Starbucks Corporation tarafından tescilli, dünya çapında kahve zinciri ve perakende gıda markası. Kahve içecekleri, atıştırmalık ve markalı ürünler sunar. 30.000+ mağazasıyla dünyanın en büyük kahve zinciridir. Gıda hizmetleri, perakende ve franchise alanlarında korunmaktadır.',
+    category: 'gida',
+    features: ['kahve', 'içecek', 'perakende', 'cafe', 'gıda'],
+    keywords: ['starbucks', 'kahve', 'cafe', 'içecek', 'perakende'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'gida_marka'
+  },
+  {
+    id: '21',
+    title: 'Sahibinden (İlan, E-Ticaret, Platform)',
+    patentNumber: 'TM2000/00021',
+    abstract: 'sahibinden.com tarafından tescilli, Türkiye\'nin en büyük ilan ve e-ticaret platformu. Emlak, vasıta, alışveriş ve hizmet ilanları sunar. Sahibinden Mobil uygulaması ile milyonlarca kullanıcıya ulaşır. Online ilan platformu ve e-ticaret alanlarında tescillidir.',
+    category: 'e-ticaret',
+    features: ['ilan platformu', 'emlak', 'vasıta', 'e-ticaret', 'mobil app'],
+    keywords: ['sahibinden', 'ilan', 'emlak', 'vasıta', 'alışveriş'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'eticaret_marka'
+  },
+  {
+    id: '22',
+    title: 'Cicek Sepeti (E-Ticaret, Çiçek, Hediye)',
+    patentNumber: 'TM2006/00022',
+    abstract: 'Çiçek Sepeti tarafından tescilli, online çiçek ve hediye gönderim platformu. Çiçek, pasta, hediye sepeti ve kişiselleştirilmiş ürünler sunar. Aynı gün teslimat hizmeti verir. E-ticaret, perakende ve lojistik alanlarında korunmaktadır.',
+    category: 'e-ticaret',
+    features: ['çiçek', 'hediye', 'e-ticaret', 'teslimat', 'perakende'],
+    keywords: ['çiçek sepeti', 'çiçek', 'hediye', 'e-ticaret', 'pasta'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'eticaret_marka'
+  },
+  {
+    id: '23',
+    title: 'D&R (Perakende, Kitap, Eğlence)',
+    patentNumber: 'TM1996/00023',
+    abstract: 'D&R tarafından tescilli, kitap, müzik, film, elektronik ve kırtasiye ürünleri satan perakende zinciri. Online mağazası ve fiziksel mağazalarıyla hizmet verir. D&R Online ve D&R Müzik alt markaları bulunur. Perakende, yayıncılık ve eğlence alanlarında tescillidir.',
+    category: 'e-ticaret',
+    features: ['kitap', 'müzik', 'film', 'elektronik', 'perakende'],
+    keywords: ['d&r', 'kitap', 'müzik', 'film', 'perakende', 'kırtasiye'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'eticaret_marka'
+  },
+  {
+    id: '24',
+    title: 'Ford (Otomotiv, Taşıt)',
+    patentNumber: 'TM1903/00024',
+    abstract: 'Ford Motor Company tarafından tescilli, dünya çapında otomotiv devi. Binek araç, ticari araç ve SUV üretir. Ford Focus, Ford Transit, Ford Ranger gibi ikonik modelleri bulunur. Otomotiv üretimi, satış ve servis hizmetleri alanlarında küresel koruma alanına sahiptir.',
+    category: 'otomotiv',
+    features: ['otomobil', 'ticari araç', 'suv', 'otomotiv', 'servis'],
+    keywords: ['ford', 'otomobil', 'araba', 'ticari', 'suv', 'otomotiv'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'otomotiv_marka'
+  },
+  {
+    id: '25',
+    title: 'Lego (Oyuncak, Eğitim, Eğlence)',
+    patentNumber: 'TM1932/00025',
+    abstract: 'LEGO Group tarafından tescilli, dünyanın en ünlü oyuncak ve eğitim markalarından biri. LEGO tuğla parçaları, tema setleri, video oyunları ve eğitim ürünleri üretir. LEGO Star Wars, LEGO Harry Potter gibi lisanslı ürünleri bulunur. Oyuncak, eğitim ve eğlence alanlarında küresel tescile sahiptir.',
+    category: 'eglence',
+    features: ['oyuncak', 'eğitim', 'lego tuğla', 'video oyun', 'lisanslı ürün'],
+    keywords: ['lego', 'oyuncak', 'eğitim', 'eğlence', 'tuğla'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'eglence_marka'
+  },
+  {
+    id: '26',
+    title: 'Netflix (Dijital İçerik, Eğlence)',
+    patentNumber: 'TM1997/00026',
+    abstract: 'Netflix Inc. tarafından tescilli, dünyanın en büyük dijital içerik ve streaming platformu. Film, dizi, belgesel ve özgün içerik üretir. 230+ milyon abone ile küresel liderdir. Dijital eğlence, yapım şirketi ve streaming teknolojileri alanlarında korunmaktadır.',
+    category: 'teknoloji',
+    features: ['streaming', 'film', 'dizi', 'dijital içerik', 'eğlence'],
+    keywords: ['netflix', 'streaming', 'film', 'dizi', 'dijital'],
+    mechanism: 'uluslararasi_tescil',
+    productType: 'teknoloji_marka'
+  }
+];
