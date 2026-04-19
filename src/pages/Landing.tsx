@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Search, Shield, AlertTriangle, FileDown, History, Check, BarChart3, Tag } from 'lucide-react';
+import { ArrowRight, Search, FileDown, Check, BarChart3 } from 'lucide-react';
 import { LegalDisclaimer } from '@/components/LegalDisclaimer';
 
 function useScrollReveal() {
@@ -98,27 +98,6 @@ export function Landing() {
                   <div className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center text-lg font-bold mb-4">{step.num}</div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">{step.title}</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section id="features" className="bg-white py-20 lg:py-24">
-        <div className="max-w-6xl mx-auto px-6">
-          <ScrollReveal className="text-center max-w-lg mx-auto mb-14">
-            <h2 className="text-3xl font-bold text-slate-900 mb-3">MarkaRadar ile neler yapabilirsiniz?</h2>
-            <p className="text-slate-600">Marka başvurusu öncesinde bilinçli kararlar almanızı sağlayan özellikler</p>
-          </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[{ icon: Search, title: 'Marka Benzerlik Arama', desc: 'Anahtar kelime, sektör ve faaliyet alanı eşleştirmesi ile en alakalı markaları bulur.' }, { icon: Shield, title: 'Çakışma Risk Değerlendirmesi', desc: '0-100 arası risk skoru ile marka çakışma olasılığını objektif olarak ölçer.' }, { icon: Tag, title: 'Sektör ve Faaliyet Analizi', desc: 'Markanızın ait olduğu sektörü ve faaliyet alanlarını otomatik olarak tespit eder.' }, { icon: AlertTriangle, title: 'Risk Faktörleri', desc: 'Çakışma riskini oluşturan faktörleri madde madde açıklar.' }, { icon: FileDown, title: 'Profesyonel PDF Rapor', desc: 'Kurumsal kalitede, indirilebilir detaylı risk analiz raporu üretir.' }, { icon: History, title: 'Analiz Geçmişi', desc: 'Tüm marka analizlerinizi görüntüleyin, karşılaştırın ve takip edin.' }, { icon: Shield, title: 'Marka İtiraz Savunma', desc: 'Markanıza gelen itirazlara karşı hukuki temelli detaylı savunma dosyası hazırlar. (899 TL)' }].map((feature, i) => (
-              <ScrollReveal key={feature.title} delay={i * 100}>
-                <div className="bg-white rounded-xl p-6 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full group">
-                  <feature.icon className="w-8 h-8 text-blue-500 mb-4 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{feature.title}</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">{feature.desc}</p>
                 </div>
               </ScrollReveal>
             ))}

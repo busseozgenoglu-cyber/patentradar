@@ -7,13 +7,6 @@ import { analyzeWithOpenAI, buildFullResult } from '@/services/openaiService';
 import { storageService } from '@/services/storageService';
 import { authService } from '@/services/authService';
 
-const EXAMPLE_CHIPS = [
-  'Kahve markası ve cafe zinciri',
-  'Spor giyim markası',
-  'E-ticaret platformu',
-  'Kozmetik ve kişisel bakım markası',
-];
-
 export function Analyze() {
   const [text, setText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -66,17 +59,6 @@ export function Analyze() {
     }
   }, [text, isValid, navigate]);
 
-  const handleChipClick = (chip: string) => {
-    const descriptions: Record<string, string> = {
-      'Kahve markası ve cafe zinciri': 'Yeni bir kahve markası oluşturuyorum. "Sıcak Gün Kahvecisi" ismini düşünüyorum. Cafe işletmeciliği yapacağım, aynı zamanda online kahve satışı ve mobil uygulama üzerinden sipariş alacağım. Logo olarak güneş ve kahve fincanı ikonu kullanmayı planlıyorum.',
-      'Spor giyim markası': '"Hız Koşusu" adında bir spor giyim markası kurmak istiyorum. Koşu ayakkabısı, spor tişört, tay ve fitness aksesuarları satacağım. Online satış ve spor salonlarında perakende satış yapacağım. Hedef kitlem 18-35 yaş arası fitness tutkunları.',
-      'E-ticaret platformu': '"Türkiye Alışveriş Merkezi" isminde bir e-ticaret platformu oluşturuyorum. Elektronik, giyim, ev eşyası ve kozmetik ürünleri satılacak. Satıcıların kendi dükkanlarını açabileceği pazaryeri modeli olacak. Hızlı teslimat ve kendi ödeme sistemimiz olacak.',
-      'Kozmetik ve kişisel bakım markası': '"Doğal Güzellik" adında organik kozmetik markası kuruyorum. Cilt bakım ürünleri, nemlendiriciler, doğal şampuanlar ve serumlar üreteceğiz. E-ticaret üzerinden satış yapacağız. Tamamen doğal ve vegan ürünler olacak.',
-    };
-    setText(descriptions[chip] || '');
-    setError('');
-  };
-
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-16">
       <div className="max-w-3xl mx-auto px-6">
@@ -96,10 +78,7 @@ export function Analyze() {
             <Search className="w-4 h-4" />
             Her analiz 499 TL
           </div>
-          <div className="mt-2 inline-flex items-center gap-1.5 text-xs text-emerald-600">
-            <Sparkles className="w-3.5 h-3.5" />
-            GPT-4o Mini ile gerçek AI analizi
-          </div>
+
         </motion.div>
 
         <motion.div
@@ -135,23 +114,7 @@ export function Analyze() {
             </div>
           </div>
 
-          <div className="mb-6">
-            <p className="text-xs text-slate-400 mb-2">Örnek marka açıklamaları:</p>
-            <div className="flex flex-wrap gap-2">
-              {EXAMPLE_CHIPS.map((chip, i) => (
-                <motion.button
-                  key={chip}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + i * 0.05 }}
-                  onClick={() => handleChipClick(chip)}
-                  className="px-3 py-1.5 text-xs font-medium border border-blue-200 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"
-                >
-                  {chip}
-                </motion.button>
-              ))}
-            </div>
-          </div>
+
 
           <button
             onClick={handleAnalyze}
