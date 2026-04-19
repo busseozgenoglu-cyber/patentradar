@@ -1,3 +1,4 @@
+// API key - Railway env veya fallback
 const API_KEY = import.meta.env.VITE_OPENAI_API_KEY || '';
 
 export function getStoredApiKey(): string {
@@ -5,7 +6,7 @@ export function getStoredApiKey(): string {
 }
 
 export function hasApiKey(): boolean {
-  return true;
+  return !!API_KEY;
 }
 
 interface OpenAIAnalysisResponse {
@@ -28,94 +29,60 @@ interface OpenAIAnalysisResponse {
 }
 
 export async function analyzeWithOpenAI(inputText: string): Promise<OpenAIAnalysisResponse> {
-  const systemPrompt = `Sen MarkaRadar'ın uzman marka çakışma analistisın. Kullanıcının verdiği marka adını ve sektörü web'de ve marka veritabanlarında gerçek zamanlı araştırarak kapsamlı çakışma riski analizi yapıyorsun.
+  if (!API_KEY) {
+    throw new Error('API yapılandırma hatası. Lütfen site yöneticisiyle iletişime geçin.');
+  }
 
-ARAŞTIRMA ADIMLARI:
-1. Marka adını ve sektörü tespit et
-2. Web aramasıyla şunları araştır:
-   - Türkiye'de aynı veya benzer isimde tescilli/faaliyet gösteren markalar (TÜRKPATENT, Ticaret Sicili)
-   - Aynı sektörde Türkiye'de aktif şirketler, e-ticaret siteleri, sosyal medya hesapları
-   - Fonetik olarak benzer isimler (telaffuz benzerliği hukuki risk yaratır)
-   - Uluslararası markalar (EUIPO, WIPO kapsamında Türkiye'de koruma altında olanlar)
-   - Nice sınıflandırmasına göre aynı sınıfta tescilli markalar
-3. Bulguları analiz ederek risk skoru hesapla
+  const systemPrompt = `Sen MarkaRadar'ın uzman marka çakışma analistisın. Kullanıcının verdiği marka adını ve sektörü kapsamlı şekilde araştırarak gerçek çakışma riski analizi yapıyorsun.
 
-Yalnızca aşağıdaki JSON formatında yanıt ver, başka hiçbir şey yazma, markdown kullanma:
+Şunları araştır ve analiz et:
+1. Türkiye'de aynı veya fonetik benzer isimde tescilli/aktif markalar (TÜRKPATENT veritabanı referans al)
+2. Aynı sektörde Türkiye'de faaliyet gösteren bilinen markalar, e-ticaret siteleri, işletmeler
+3. Fonetik benzerlik: telaffuz benzerliği hukuki risk yaratır
+4. Uluslararası markalar (EUIPO, WIPO kapsamında Türkiye'de koruma altında olanlar)
+5. Nice sınıflandırmasına göre risk değerlendirmesi
+
+SADECE aşağıdaki JSON formatında yanıt ver, başka hiçbir şey yazma:
 
 {
-  "product_summary": "Markanın 3-4 cümlelik detaylı özeti: ne yapıyor, hangi sektör, hedef kitle, iş modeli",
+  "product_summary": "Markanın 3-4 cümlelik detaylı özeti",
   "detected_features": ["özellik1", "özellik2", "özellik3", "özellik4"],
-  "search_keywords": ["araştırılan anahtar1", "araştırılan anahtar2", "araştırılan anahtar3", "araştırılan anahtar4", "araştırılan anahtar5"],
-  "risk_score": 0-100 arası sayı,
-  "risk_level": "low" veya "medium" veya "high",
-  "summary_comment": "Araştırma bulgularına dayalı 4-5 cümlelik risk değerlendirmesi. Hangi markaların neden risk oluşturduğunu, hukuki durumu ve önerilen adımları açıkla.",
+  "search_keywords": ["anahtar1", "anahtar2", "anahtar3", "anahtar4", "anahtar5"],
+  "risk_score": 65,
+  "risk_level": "medium",
+  "summary_comment": "Araştırma bulgularına dayalı 4-5 cümlelik detaylı risk değerlendirmesi",
   "top_matches": [
     {
-      "title": "Markanın tam adı — Şirket/İşletme Adı",
-      "patent_number": "Gerçek tescil numarası varsa yaz, yoksa 'Doğrulanamadı' yaz",
-      "summary": "Bu markanın ne yaptığı, nerede aktif olduğu ve neden çakışma riski oluşturduğu (2-3 cümle)",
-      "similarity_score": 0-100,
-      "match_reasons": ["Fonetik/yazım benzerliği açıklaması", "Sektör örtüşmesi açıklaması", "Hedef kitle ve pazar benzerliği"],
+      "title": "Markanın tam adı — Şirket Adı",
+      "patent_number": "Varsa gerçek numara, yoksa 'Doğrulanamadı'",
+      "summary": "Bu markanın ne yaptığı ve neden çakışma riski oluşturduğu (2-3 cümle)",
+      "similarity_score": 75,
+      "match_reasons": ["Fonetik/yazım benzerliği detayı", "Sektör örtüşmesi detayı", "Hedef kitle benzerliği"],
       "category": "Nice Sınıf XX - Sektör Adı"
     }
   ],
   "risk_factors": [
-    "Risk 1: Hangi marka, ne tür hukuki risk (tescil çakışması, itiraz hakkı vb.)",
-    "Risk 2: Pazar ve ticari çakışma riski detayı",
-    "Risk 3: Tüketici karışıklığı ve itibar riski"
+    "Risk 1: Hangi marka, ne tür hukuki risk",
+    "Risk 2: Pazar ve ticari çakışma detayı",
+    "Risk 3: Tüketici karışıklığı riski"
   ],
   "uniqueness_suggestions": [
-    "Öneri 1: Somut isim değişikliği veya farklılaşma önerisi",
-    "Öneri 2: Hangi Nice sınıflarında başvuru yapılmalı",
-    "Öneri 3: Coğrafi veya sektörel niş strateji",
-    "Öneri 4: Marka koruması için acil adımlar",
-    "Öneri 5: TÜRKPATENT başvuru süreci önerisi"
+    "Öneri 1: Somut farklılaşma önerisi",
+    "Öneri 2: Nice sınıfı stratejisi",
+    "Öneri 3: Coğrafi/sektörel niş strateji",
+    "Öneri 4: Acil marka koruma adımları",
+    "Öneri 5: TÜRKPATENT başvuru önerisi"
   ]
 }
 
 Risk skoru kriterleri:
 - 70-100 (high): Aynı/fonetik benzer isimde, aynı sektörde tescilli veya aktif marka var
-- 40-69 (medium): Benzer isim veya kısmen örtüşen sektörde markalar mevcut
-- 0-39 (low): Düşük çakışma riski, yeterince özgün
+- 40-69 (medium): Benzer isim veya örtüşen sektörde markalar mevcut  
+- 0-39 (low): Düşük çakışma riski
 
-Araştırmana dayalı gerçek markalar ve bulgular yaz. Hayali tescil numarası veya marka uydurma.`;
+ÖNEMLİ: Gerçek bilinen markaları referans al. Hayali tescil numarası uydurma.`;
 
-  // Step 1: Web araması ile gerçek zamanlı araştırma
-  let webSearchContext = '';
-  try {
-    const searchResponse = await fetch('https://api.openai.com/v1/responses', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o',
-        tools: [{ type: 'web_search_preview' }],
-        input: `Türkiye marka çakışma araştırması: "${inputText}"\n\nAraştır:\n1. Türkiye'de aynı/benzer isimde markalar ve şirketler\n2. TÜRKPATENT'te bu sektörde benzer tescilli markalar\n3. Aynı sektörde Türkiye'de faaliyet gösteren önemli markalar\n4. Bu isimle çakışabilecek uluslararası markalar\n\nBulgularını Türkçe özetle.`,
-      }),
-    });
-
-    if (searchResponse.ok) {
-      const searchData = await searchResponse.json();
-      if (searchData.output) {
-        for (const block of searchData.output) {
-          if (block.type === 'message' && block.content) {
-            for (const content of block.content) {
-              if (content.type === 'output_text' && content.text) {
-                webSearchContext = content.text;
-              }
-            }
-          }
-        }
-      }
-    }
-  } catch {
-    // Web search failed, continue with knowledge-based analysis
-  }
-
-  // Step 2: Araştırma bulgularıyla kapsamlı analiz
-  const analysisResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -127,7 +94,7 @@ Araştırmana dayalı gerçek markalar ve bulgular yaz. Hayali tescil numarası 
         { role: 'system', content: systemPrompt },
         {
           role: 'user',
-          content: `Analiz edilecek marka:\n${inputText}\n\n${webSearchContext ? `Web araştırması bulguları:\n${webSearchContext}\n\nBu bulgulara dayanarak` : 'Bilgine dayanarak'} JSON formatında kapsamlı çakışma analizi yap.`,
+          content: `Şu marka için kapsamlı çakışma analizi yap:\n\n${inputText}\n\nTürkiye'deki mevcut markalar, TÜRKPATENT veritabanı bilgilerin ve sektör bilginle gerçekçi bir analiz yap.`,
         }
       ],
       temperature: 0.2,
@@ -136,12 +103,19 @@ Araştırmana dayalı gerçek markalar ve bulgular yaz. Hayali tescil numarası 
     }),
   });
 
-  if (!analysisResponse.ok) {
-    const error = await analysisResponse.json().catch(() => ({}));
-    throw new Error((error as any).error?.message || `Analiz hatası: ${analysisResponse.status}`);
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    const msg = (error as any)?.error?.message || '';
+    if (msg.includes('quota') || msg.includes('billing')) {
+      throw new Error('API kullanım limiti aşıldı. Lütfen daha sonra tekrar deneyin.');
+    }
+    if (msg.includes('invalid_api_key') || msg.includes('Incorrect API key')) {
+      throw new Error('API yapılandırma hatası. Lütfen site yöneticisiyle iletişime geçin.');
+    }
+    throw new Error(msg || `Analiz hatası: ${response.status}`);
   }
 
-  const data = await analysisResponse.json();
+  const data = await response.json();
   const content = data.choices[0]?.message?.content;
 
   if (!content) {

@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, Loader2, AlertCircle, Sparkles } from 'lucide-react';
-import { analyzePatent } from '@/services/aiAnalysisService';
 import { analyzeWithOpenAI, buildFullResult } from '@/services/openaiService';
 import { storageService } from '@/services/storageService';
 import { authService } from '@/services/authService';
@@ -11,6 +10,7 @@ export function Analyze() {
   const [text, setText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState('');
+  const [step, setStep] = useState('');
   const navigate = useNavigate();
 
   const charCount = text.length;
@@ -21,23 +21,17 @@ export function Analyze() {
       setError('Lütfen marka adınızı ve sektörünüzü yazın.');
       return;
     }
-    
+
     setError('');
     setIsAnalyzing(true);
-    
+    setStep('Marka bilgileri analiz ediliyor...');
+
     try {
-      let result;
-      
-      try {
-        // Try AI engine first
-        const openaiResult = await analyzeWithOpenAI(text);
-        result = buildFullResult(openaiResult, text);
-      } catch {
-        // Fallback to local analysis engine
-        await new Promise(resolve => setTimeout(resolve, 2500));
-        result = analyzePatent(text);
-      }
-      
+      setStep('Benzer markalar araştırılıyor...');
+      const openaiResult = await analyzeWithOpenAI(text);
+      setStep('Risk değerlendirmesi tamamlanıyor...');
+      const result = buildFullResult(openaiResult, text);
+
       const stored: import('@/types').StoredAnalysis = {
         id: result.id,
         userId: authService.getCurrentUser()?.id,
@@ -45,17 +39,18 @@ export function Analyze() {
         result,
         createdAt: result.createdAt,
       };
-      
+
       if (authService.isAuthenticated()) {
         storageService.saveAnalysis(stored);
       } else {
         storageService.saveGuestAnalysis(stored);
       }
-      
+
       navigate(`/results/${result.id}`);
     } catch (err: any) {
       setError(err.message || 'Analiz sırasında bir hata oluştu. Lütfen tekrar deneyin.');
       setIsAnalyzing(false);
+      setStep('');
     }
   }, [text, isValid, navigate]);
 
@@ -78,7 +73,6 @@ export function Analyze() {
             <Search className="w-4 h-4" />
             Her analiz 499 TL
           </div>
-
         </motion.div>
 
         <motion.div
@@ -102,7 +96,7 @@ export function Analyze() {
             <div className="flex items-center justify-between mt-2">
               <div className="flex-1">
                 {error && (
-                  <div className="flex items-center gap-1.5 text-amber-600 text-xs sm:text-sm">
+                  <div className="flex items-center gap-1.5 text-red-500 text-xs sm:text-sm">
                     <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
                     {error}
                   </div>
@@ -113,8 +107,6 @@ export function Analyze() {
               </span>
             </div>
           </div>
-
-
 
           <button
             onClick={handleAnalyze}
@@ -146,24 +138,27 @@ export function Analyze() {
             >
               <Sparkles className="w-10 h-10 text-emerald-500 animate-pulse mb-4" />
               <h3 className="text-xl font-bold text-slate-900 mb-2">MarkaRadar analiz ediyor...</h3>
-              <p className="text-sm text-slate-500 text-center mb-6">
-                AI marka özelliklerini çıkarıyor, benzer markaları arıyor ve çakışma risk değerlendirmesi yapıyor.
+              <p className="text-sm text-slate-500 text-center mb-2">
+                {step || 'Marka bilgileri işleniyor...'}
+              </p>
+              <p className="text-xs text-slate-400 text-center mb-6">
+                Bu işlem 15-30 saniye sürebilir.
               </p>
               <div className="w-full max-w-sm space-y-3">
                 <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
-                  <motion.div className="h-full bg-emerald-400 rounded-full" initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 8, ease: 'easeInOut' }} />
+                  <motion.div className="h-full bg-emerald-400 rounded-full" initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 20, ease: 'easeInOut' }} />
                 </div>
                 <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
-                  <motion.div className="h-full bg-emerald-400 rounded-full" initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 8, delay: 1, ease: 'easeInOut' }} />
+                  <motion.div className="h-full bg-emerald-400 rounded-full" initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 20, delay: 3, ease: 'easeInOut' }} />
                 </div>
                 <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
-                  <motion.div className="h-full bg-emerald-400 rounded-full" initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 8, delay: 2, ease: 'easeInOut' }} />
+                  <motion.div className="h-full bg-emerald-400 rounded-full" initial={{ width: '0%' }} animate={{ width: '100%' }} transition={{ duration: 20, delay: 6, ease: 'easeInOut' }} />
                 </div>
               </div>
               <div className="flex gap-6 mt-6 text-xs text-slate-400">
-                <span>Özellik çıkarma</span>
+                <span>Marka tarama</span>
                 <span>→</span>
-                <span>Benzerlik arama</span>
+                <span>Çakışma analizi</span>
                 <span>→</span>
                 <span>Risk değerlendirmesi</span>
               </div>
