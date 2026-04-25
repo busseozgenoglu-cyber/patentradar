@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Crawl-delay: 1
 
-Sitemap: https://www.markaradar.com/sitemap.xml
+Sitemap: https://patentradar.pro/sitemap.xml
