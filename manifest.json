@@ -1,0 +1,36 @@
+{
+  "short_name": "MarkaRadar",
+  "name": "MarkaRadar - AI Destekli Marka Çakışma Analizi",
+  "description": "AI destekli marka çakışma ve risk analizi platformu. Markanızı başvuru öncesi analiz edin.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#3b82f6",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Analiz Başlat",
+      "short_name": "Analiz",
+      "description": "Yeni bir marka analizi başlatın",
+      "url": "#/analyze"
+    },
+    {
+      "name": "Fiyatlandırma",
+      "short_name": "Fiyatlar",
+      "description": "Fiyatlandırma planlarını görüntüleyin",
+      "url": "#/pricing"
+    },
+    {
+      "name": "İtiraz Savunma",
+      "short_name": "Savunma",
+      "description": "Marka itiraz savunma dosyası hazırlayın",
+      "url": "#/savunma"
+    }
+  ]
+}
