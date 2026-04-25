@@ -1,8 +1,20 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, UserPlus, User } from 'lucide-react';
 import { authService } from '@/services/authService';
+
+function getPasswordStrength(pwd: string): { score: number; label: string; color: string } {
+  let score = 0;
+  if (pwd.length >= 8) score++;
+  if (/[A-Z]/.test(pwd)) score++;
+  if (/[0-9]/.test(pwd)) score++;
+  if (/[^A-Za-z0-9]/.test(pwd)) score++;
+
+  const labels = ['Çok Zayıf', 'Zayıf', 'Orta', 'Güçlü', 'Çok Güçlü'];
+  const colors = ['bg-red-500', 'bg-red-400', 'bg-amber-400', 'bg-emerald-400', 'bg-emerald-500'];
+  return { score, label: labels[score], color: colors[score] };
+}
 
 export function Register() {
   const navigate = useNavigate();
@@ -15,9 +27,16 @@ export function Register() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const strength = useMemo(() => getPasswordStrength(password), [password]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (password.length < 6) {
+      setError('Şifre en az 6 karakter olmalıdır.');
+      return;
+    }
 
     if (password !== passwordConfirm) {
       setError('Şifreler eşleşmiyor.');
@@ -25,7 +44,7 @@ export function Register() {
     }
 
     if (!agreed) {
-      setError('Kullanım koşullarını kabul etmeniz gerekiyor.');
+      setError('Kullanım koşullarını ve gizlilik politikasını kabul etmeniz gerekiyor.');
       return;
     }
 
@@ -137,6 +156,21 @@ export function Register() {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              {password.length > 0 && (
+                <div className="mt-2">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex gap-1 flex-1">
+                      {[0, 1, 2, 3].map((i) => (
+                        <div
+                          key={i}
+                          className={`h-1.5 flex-1 rounded-full transition-colors ${i < strength.score ? strength.color : 'bg-slate-200'}`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs text-slate-500 ml-2">{strength.label}</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div>
@@ -162,8 +196,8 @@ export function Register() {
                 className="mt-0.5 rounded border-slate-300 text-blue-500 focus:ring-blue-500"
               />
               <span>
-                <span className="text-blue-600 hover:text-blue-700 cursor-pointer">Kullanım koşullarını</span> ve{' '}
-                <span className="text-blue-600 hover:text-blue-700 cursor-pointer">gizlilik politikasını</span> kabul ediyorum.
+                <Link to="/kullanim-kosullari" className="text-blue-600 hover:text-blue-700 underline">Kullanım koşullarını</Link> ve{' '}
+                <Link to="/gizlilik" className="text-blue-600 hover:text-blue-700 underline">gizlilik politikasını</Link> kabul ediyorum.
               </span>
             </label>
 

@@ -77,8 +77,35 @@ export function Landing() {
       <section className="bg-white border-b border-slate-100 py-5">
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
-            {[{ icon: Check, text: 'Marka Başına 499 TL' }, { icon: Search, text: '26+ Gerçek Marka Verisi' }, { icon: FileDown, text: 'Detaylı PDF Rapor' }, { icon: BarChart3, text: 'Türkçe Risk Analizi' }].map((item, i) => (
+            {[{ icon: Check, text: 'Marka Başına 299 TL' }, { icon: Search, text: '26+ Gerçek Marka Verisi' }, { icon: FileDown, text: 'Detaylı PDF Rapor' }, { icon: BarChart3, text: 'Türkçe Risk Analizi' }].map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-sm text-slate-600"><item.icon className="w-4 h-4 text-blue-500" />{item.text}</div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section id="features" className="bg-white py-20 lg:py-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <ScrollReveal className="text-center max-w-lg mx-auto mb-14">
+            <h2 className="text-3xl font-bold text-slate-900 mb-3">Özellikler</h2>
+            <p className="text-slate-600">MarkaRadar'ın size sunduğu güçlü araçlar</p>
+          </ScrollReveal>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: 'AI Çakışma Analizi', desc: 'Yapay zeka markanızı binlerce kayıtlı marka ile karşılaştırır, çakışma riskini puanlar.' },
+              { title: 'Gerçek Zamanlı Araştırma', desc: "Web'de gerçek zamanlı arama yaparak Türkiye'deki aktif markaları ve işletmeleri bulur." },
+              { title: 'Risk Skoru (0-100)', desc: 'Anlaşılır bir 0-100 risk skoru ile markanızın çakışma potansiyelini görün.' },
+              { title: 'PDF Rapor', desc: 'Profesyonel tasarımlı, hukuki uyarıları içeren detaylı PDF raporunu indirin.' },
+              { title: 'Özgünleşme Önerileri', desc: 'Riski azaltmak için marka ismi, sektör ve hedef kitle önerileri alın.' },
+              { title: 'İtiraz Savunma Dosyası', desc: 'Markanıza gelen itirazlara karşı hukuki temelli savunma dosyası hazırlayın.' },
+            ].map((f, i) => (
+              <ScrollReveal key={f.title} delay={i * 100}>
+                <div className="bg-slate-50 rounded-xl p-6 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{f.title}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{f.desc}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -151,7 +178,7 @@ export function Landing() {
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">TEK FİYAT</div>
               <h3 className="text-xl font-bold text-slate-900 mb-2 text-center">Marka Analizi</h3>
               <div className="flex items-baseline justify-center gap-1 mb-2">
-                <span className="text-5xl font-extrabold text-slate-900">499</span>
+                <span className="text-5xl font-extrabold text-slate-900">299</span>
                 <span className="text-slate-500">TL</span>
               </div>
               <p className="text-center text-sm text-slate-500 mb-6">Her marka sorgusu için</p>
@@ -160,7 +187,7 @@ export function Landing() {
                   <li key={f} className="flex items-center gap-2.5 text-sm text-slate-600"><Check className="w-4 h-4 text-blue-500 flex-shrink-0" />{f}</li>
                 ))}
               </ul>
-              <Link to="/analyze" className="block w-full text-center py-3.5 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/20">Analiz Başlat — 499 TL</Link>
+              <Link to="/analyze" className="block w-full text-center py-3.5 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/20">Analiz Başlat — 299 TL</Link>
             </div>
           </ScrollReveal>
         </div>

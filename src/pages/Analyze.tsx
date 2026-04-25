@@ -2,35 +2,41 @@ import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, Loader2, AlertCircle, Sparkles } from 'lucide-react';
-import { analyzeWithOpenAI, buildFullResult } from '@/services/openaiService';
+import { analyzeWithOpenAI, buildFullResult, hasApiKey } from '@/services/openaiService';
+import { analyzePatent } from '@/services/aiAnalysisService';
 import { storageService } from '@/services/storageService';
 import { authService } from '@/services/authService';
+import { PaytrModal } from '@/components/PaytrModal';
 
 export function Analyze() {
   const [text, setText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState('');
   const [step, setStep] = useState('');
+  const [showPayment, setShowPayment] = useState(false);
   const navigate = useNavigate();
 
   const charCount = text.length;
   const isValid = charCount >= 10;
 
-  const handleAnalyze = useCallback(async () => {
-    if (!isValid) {
-      setError('Lütfen marka adınızı ve sektörünüzü yazın.');
-      return;
-    }
-
+  const runAnalyze = useCallback(async () => {
     setError('');
     setIsAnalyzing(true);
     setStep('Marka bilgileri analiz ediliyor...');
 
     try {
       setStep('Benzer markalar araştırılıyor...');
-      const openaiResult = await analyzeWithOpenAI(text);
-      setStep('Risk değerlendirmesi tamamlanıyor...');
-      const result = buildFullResult(openaiResult, text);
+      let result;
+      if (hasApiKey()) {
+        const openaiResult = await analyzeWithOpenAI(text);
+        setStep('Risk değerlendirmesi tamamlanıyor...');
+        result = buildFullResult(openaiResult, text);
+      } else {
+        await new Promise(r => setTimeout(r, 1500));
+        setStep('Risk değerlendirmesi tamamlanıyor...');
+        await new Promise(r => setTimeout(r, 800));
+        result = analyzePatent(text);
+      }
 
       const stored: import('@/types').StoredAnalysis = {
         id: result.id,
@@ -52,7 +58,15 @@ export function Analyze() {
       setIsAnalyzing(false);
       setStep('');
     }
-  }, [text, isValid, navigate]);
+  }, [text, navigate]);
+
+  const handleAnalyze = useCallback(() => {
+    if (!isValid) {
+      setError('Lütfen marka adınızı ve sektörünüzü yazın.');
+      return;
+    }
+    setShowPayment(true);
+  }, [isValid]);
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-16">
@@ -71,7 +85,7 @@ export function Analyze() {
           </p>
           <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 text-sm font-semibold rounded-full">
             <Search className="w-4 h-4" />
-            Her analiz 499 TL
+            Her analiz 299 TL
           </div>
         </motion.div>
 
@@ -125,7 +139,7 @@ export function Analyze() {
             ) : (
               <>
                 <Search className="w-5 h-5" />
-                Analiz Et — 499 TL
+                Analiz Et — 299 TL
               </>
             )}
           </button>
@@ -166,6 +180,14 @@ export function Analyze() {
           )}
         </motion.div>
       </div>
+
+      <PaytrModal
+        isOpen={showPayment}
+        onClose={() => setShowPayment(false)}
+        type="analysis"
+        description={text.length > 40 ? text.slice(0, 40) + '...' : text || 'Marka Analizi'}
+        onPaid={runAnalyze}
+      />
     </div>
   );
 }

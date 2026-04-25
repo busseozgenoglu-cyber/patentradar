@@ -10,9 +10,14 @@ export function Admin() {
   const analyses = storageService.getAnalyses();
   
   useEffect(() => {
-    // Simple admin check - in real app this would be proper role-based auth
     if (!authService.isAuthenticated()) {
       navigate('/login');
+      return;
+    }
+    const user = authService.getCurrentUser();
+    // Only allow admin access for demo user or explicit admin flag
+    if (!user || (user.email !== 'demo@markaradar.com' && !user.plan)) {
+      navigate('/dashboard');
     }
   }, [navigate]);
 

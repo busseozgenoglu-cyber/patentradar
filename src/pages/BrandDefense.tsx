@@ -1,9 +1,9 @@
 import { useState } from 'react';
-
 import { motion } from 'framer-motion';
 import { Shield, Loader2, FileDown, ArrowLeft, AlertCircle, Sparkles, Gavel, FileText, Building2, Users, Target, CalendarDays, Check } from 'lucide-react';
 import { generateDefense, generateDefenseHTML, type DefenseInput, type DefenseResult } from '@/services/defenseService';
 import { downloadPDF } from '@/services/pdfService';
+import { PaytrModal } from '@/components/PaytrModal';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
@@ -42,9 +42,11 @@ export function BrandDefense() {
   const [loading, setLoading] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPayment, setShowPayment] = useState(false);
 
-  const isValid = form.brandName.length >= 2 && 
-    form.sector.length > 0 && 
+  const isValid = form.brandName.length >= 2 &&
+    form.sector.length > 0 &&
+    form.activityDescription.length >= 10 &&
     form.opponentBrand.length >= 2 &&
     form.objectionReasons.length > 0;
 
@@ -53,14 +55,9 @@ export function BrandDefense() {
     setError('');
   };
 
-  const handleSubmit = async () => {
-    if (!isValid) {
-      setError('Lütfen tüm zorunlu alanları doldurun (itiraz gerekçeleri dahil).');
-      return;
-    }
+  const runSubmit = async () => {
     setLoading(true);
     setError('');
-
     try {
       const defense = await generateDefense(form);
       setResult(defense);
@@ -70,6 +67,14 @@ export function BrandDefense() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSubmit = () => {
+    if (!isValid) {
+      setError('Lütfen tüm zorunlu alanları doldurun (itiraz gerekçeleri dahil).');
+      return;
+    }
+    setShowPayment(true);
   };
 
   const handleDownloadPDF = async () => {
@@ -307,7 +312,7 @@ export function BrandDefense() {
           </p>
           <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-amber-50 text-amber-700 text-sm font-semibold rounded-full">
             <Gavel className="w-4 h-4" />
-            Her savunma dosyası 899 TL
+            Her savunma dosyası 299 TL
           </div>
         </motion.div>
 
@@ -404,9 +409,17 @@ export function BrandDefense() {
               {loading ? (
                 <><Loader2 className="w-5 h-5 animate-spin" /> Savunma Dosyası Hazırlanıyor...</>
               ) : (
-                <><Sparkles className="w-5 h-5" /> Savunma Dosyası Hazırla — 899 TL</>
+                <><Sparkles className="w-5 h-5" /> Savunma Dosyası Hazırla — 299 TL</>
               )}
             </button>
+
+            <PaytrModal
+              isOpen={showPayment}
+              onClose={() => setShowPayment(false)}
+              type="defense"
+              description={`${form.brandName} vs ${form.opponentBrand}`}
+              onPaid={runSubmit}
+            />
           </div>
         </motion.div>
       </div>

@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Check, ChevronDown, ChevronUp, Search } from 'lucide-react';
 import { LegalDisclaimer } from '@/components/LegalDisclaimer';
-
 const faqs = [
   {
     q: 'MarkaRadar resmi bir marka araştırması mıdır?',
@@ -15,11 +14,11 @@ const faqs = [
   },
   {
     q: 'PDF raporu nasıl alabilirim?',
-    a: 'Her marka analizi (499 TL) kapsamında profesyonel PDF raporu otomatik olarak oluşturulur ve indirilebilir.',
+    a: 'Her marka analizi (299 TL) kapsamında profesyonel PDF raporu otomatik olarak oluşturulur ve indirilebilir.',
   },
   {
     q: 'Kaç marka analizi yapabilirim?',
-    a: 'Herhangi bir sınırlama yoktur. Her marka için ayrı analiz satın alabilirsiniz. Her analiz 499 TL\'dir.',
+    a: "Herhangi bir sınırlama yoktur. Her marka için ayrı analiz satın alabilirsiniz. Her analiz 299 TL'dir."
   },
 ];
 
@@ -41,7 +40,7 @@ export function Pricing() {
             </div>
             <h3 className="text-xl font-bold text-slate-900 mb-2 text-center">Marka Analizi</h3>
             <div className="flex items-baseline justify-center gap-1 mb-2">
-              <span className="text-5xl font-extrabold text-slate-900">499</span>
+              <span className="text-5xl font-extrabold text-slate-900">299</span>
               <span className="text-slate-500">TL</span>
             </div>
             <p className="text-center text-sm text-slate-500 mb-6">Her marka sorgusu için</p>
@@ -50,7 +49,7 @@ export function Pricing() {
                 <li key={f} className="flex items-center gap-2.5 text-sm text-slate-600"><Check className="w-4 h-4 text-blue-500 flex-shrink-0" />{f}</li>
               ))}
             </ul>
-            <Link to="/analyze" className="block w-full text-center py-3.5 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/20">Analiz Başlat — 499 TL</Link>
+            <Link to="/analyze" className="block w-full text-center py-3.5 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/20">Analiz Başlat — 299 TL</Link>
           </div>
         </motion.div>
 

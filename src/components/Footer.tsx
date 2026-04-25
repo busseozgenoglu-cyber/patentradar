@@ -1,6 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function Footer() {
+  const navigate = useNavigate();
+
+  const scrollToSection = (id: string) => {
+    navigate('/');
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
+  };
+
   return (
     <footer className="bg-slate-900 text-slate-400">
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
@@ -26,12 +35,12 @@ export function Footer() {
             <h4 className="text-white font-semibold text-sm mb-4">Ürün</h4>
             <ul className="space-y-2.5">
               <li>
-                <button onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm hover:text-white transition-colors">
+                <button onClick={() => scrollToSection('features')} className="text-sm hover:text-white transition-colors">
                   Özellikler
                 </button>
               </li>
               <li>
-                <button onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm hover:text-white transition-colors">
+                <button onClick={() => scrollToSection('how-it-works')} className="text-sm hover:text-white transition-colors">
                   Nasıl Çalışır
                 </button>
               </li>
@@ -46,10 +55,18 @@ export function Footer() {
           <div>
             <h4 className="text-white font-semibold text-sm mb-4">Kaynaklar</h4>
             <ul className="space-y-2.5">
-              <li><span className="text-sm text-slate-600 cursor-not-allowed">Blog</span></li>
-              <li><span className="text-sm text-slate-600 cursor-not-allowed">Yardım Merkezi</span></li>
-              <li><span className="text-sm text-slate-600 cursor-not-allowed">Gizlilik Politikası</span></li>
-              <li><span className="text-sm text-slate-600 cursor-not-allowed">Kullanım Koşulları</span></li>
+              <li><span className="text-sm text-slate-600 cursor-not-allowed">Blog (yakında)</span></li>
+              <li><span className="text-sm text-slate-600 cursor-not-allowed">Yardım Merkezi (yakında)</span></li>
+              <li>
+                <Link to="/gizlilik" className="text-sm hover:text-white transition-colors">
+                  Gizlilik Politikası
+                </Link>
+              </li>
+              <li>
+                <Link to="/kullanim-kosullari" className="text-sm hover:text-white transition-colors">
+                  Kullanım Koşulları
+                </Link>
+              </li>
             </ul>
           </div>
 
