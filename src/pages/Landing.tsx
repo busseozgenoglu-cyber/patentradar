@@ -195,6 +195,23 @@ export function Landing() {
         </div>
       </section>
 
+      {/* SEO Content */}
+      <section className="bg-white py-20 lg:py-24 border-t border-slate-100">
+        <div className="max-w-4xl mx-auto px-6">
+          <ScrollReveal className="text-center max-w-2xl mx-auto mb-10">
+            <h2 className="text-3xl font-bold text-slate-900 mb-3">Marka Tescil Öncesi Neden Araştırma Yapmalısınız?</h2>
+            <p className="text-slate-600">Türk Patent ve Marka Kurumu'na başvuru öncesinde yapılacak araştırma, markanızın geleceğini korur.</p>
+          </ScrollReveal>
+          <ScrollReveal>
+            <div className="space-y-4 text-slate-600 leading-relaxed">
+              <p>Marka tescil öncesi çakışma analizi, Türkiye'de marka sahibi olmak isteyen her girişimci için zorunlu bir adımdır. <strong className="text-slate-800">Türkpatent</strong> üzerinden yapılan resmi sorgulamaların yanı sıra, web'de aktif olan benzer isimde işletmeleri tespit etmek de büyük önem taşır. MarkaRadar, yapay zeka destekli algoritmaları ile hem tescilli hem de tescilsiz markaları analiz ederek size kapsamlı bir risk raporu sunar.</p>
+              <p>Nice sınıfı seçimi, markanızın hangi alanlarda korunacağını belirler. Gıda, kozmetik, tekstil veya teknoloji sektöründe faaliyet gösteriyorsanız, doğru Nice sınıfını seçmek ve bu sınıftaki benzer markaları incelemek, başvuru sürecinizin başarı şansını doğrudan etkiler. MarkaRadar analizi sonrasında elde edeceğiniz <strong className="text-slate-800">risk skoru</strong>, markanızın çakışma potansiyelini sayısal olarak ifade eder ve karar verme sürecinizi kolaylaştırır.</p>
+              <p>İtiraz savunma hizmetimiz ile markanıza yapılan haksız itirazlara karşı hukuki temelli, profesyonel savunma dosyaları hazırlayabilirsiniz. <Link to="/analyze" className="text-blue-600 hover:underline font-medium">Hemen analiz başlatın</Link> ve markanızı koruma altına alın.</p>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* Disclaimer */}
       <section className="bg-slate-50 py-12">
         <div className="max-w-3xl mx-auto px-6">

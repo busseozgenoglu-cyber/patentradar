@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Check, ChevronDown, ChevronUp, Search } from 'lucide-react';
@@ -26,6 +26,23 @@ const faqs = [
 export function Pricing() {
   useSEO('Fiyatlandırma', 'MarkaRadar fiyatlandırma planları. Marka analizi ve itiraz savunma hizmetleri.');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map(faq => ({
+        '@type': 'Question',
+        name: faq.q,
+        acceptedAnswer: { '@type': 'Answer', text: faq.a },
+      })),
+    });
+    script.id = 'faq-schema';
+    document.head.appendChild(script);
+    return () => { const el = document.getElementById('faq-schema'); if (el) document.head.removeChild(el); };
+  }, []);
 
   return (
     <div className="min-h-screen bg-white pt-24 pb-16">

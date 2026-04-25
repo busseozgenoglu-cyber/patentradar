@@ -16,6 +16,18 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          pdf: ['jspdf', 'html2canvas'],
+          charts: ['recharts'],
+          animation: ['framer-motion'],
+          ui: ['lucide-react'],
+        },
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
