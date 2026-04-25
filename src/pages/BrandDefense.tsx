@@ -62,8 +62,9 @@ export function BrandDefense() {
       const defense = await generateDefense(form);
       setResult(defense);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (err: any) {
-      setError(err.message || 'Savunma dosyası oluşturulurken bir hata oluştu.');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Savunma dosyası oluşturulurken bir hata oluştu.';
+      setError(msg);
     } finally {
       setLoading(false);
     }

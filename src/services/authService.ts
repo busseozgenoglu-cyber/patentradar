@@ -29,6 +29,8 @@ export const authService = {
   },
 
   login(email: string, _password: string): { user: User; token: string } {
+    // _password is intentionally unused in mock auth
+    void _password;
     // For demo, accept any credentials if user exists, otherwise create demo user
     let user = storageService.getUser();
     

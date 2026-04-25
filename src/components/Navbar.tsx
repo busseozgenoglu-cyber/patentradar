@@ -31,13 +31,10 @@ export function Navbar() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [location.pathname]);
-
   const handleLogout = () => {
     authService.logout();
     setUser(null);
+    setMobileOpen(false);
     navigate('/');
   };
 
@@ -208,12 +205,14 @@ export function Navbar() {
             </button>
             <Link
               to="/pricing"
+              onClick={() => setMobileOpen(false)}
               className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
             >
               Fiyatlandırma
             </Link>
             <Link
               to="/savunma"
+              onClick={() => setMobileOpen(false)}
               className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
             >
               <Gavel className="w-4 h-4" />
@@ -224,11 +223,11 @@ export function Navbar() {
             
             {user ? (
               <>
-                <Link to="/dashboard" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">
+                <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">
                   <LayoutDashboard className="w-4 h-4" />
                   Dashboard
                 </Link>
-                <Link to="/analyze" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">
+                <Link to="/analyze" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg">
                   <Search className="w-4 h-4" />
                   Yeni Analiz
                 </Link>
@@ -242,11 +241,12 @@ export function Navbar() {
               </>
             ) : (
               <>
-                <Link to="/login" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg">
+                <Link to="/login" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg">
                   Giriş Yap
                 </Link>
                 <Link
                   to="/analyze"
+                  onClick={() => setMobileOpen(false)}
                   className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-500 text-white text-sm font-semibold rounded-lg hover:bg-blue-600 transition-colors mt-2"
                 >
                   Analiz Başlat

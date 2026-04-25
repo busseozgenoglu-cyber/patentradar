@@ -6,8 +6,7 @@ import { paymentService, type PaymentRecord } from '@/services/paymentService';
 
 export function Payment() {
   const navigate = useNavigate();
-  const [payments, setPayments] = useState<PaymentRecord[]>(paymentService.getPayments());
-  const [success, setSuccess] = useState('');
+  const [payments] = useState<PaymentRecord[]>(paymentService.getPayments());
 
   const totalSpent = payments.reduce((acc, p) => acc + p.amount, 0);
 
@@ -21,12 +20,6 @@ export function Payment() {
           <h1 className="text-3xl font-bold text-slate-900">Ödeme Yönetimi</h1>
           <p className="text-slate-600 mt-1">Ödeme geçmişinizi görüntüleyin ve PayTR ayarlarınızı yönetin.</p>
         </motion.div>
-
-        {success && (
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700 flex items-center gap-2">
-            <CheckCircle className="w-4 h-4" /> {success}
-          </motion.div>
-        )}
 
         {/* Stats */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid sm:grid-cols-2 gap-4 mb-8">

@@ -77,8 +77,9 @@ export function Results() {
 
       navigate(`/results/${newResult.id}`, { replace: true });
       setResult(newResult);
-    } catch (err: any) {
-      alert(err.message || 'Yeniden analiz sırasında bir hata oluştu.');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Yeniden analiz sırasında bir hata oluştu.';
+      alert(msg);
     } finally {
       setReanalyzeLoading(false);
     }

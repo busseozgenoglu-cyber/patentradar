@@ -88,7 +88,8 @@ export async function generateDefense(input: DefenseInput): Promise<DefenseResul
       });
       if (!resp.ok) {
         const err = await resp.json().catch(() => ({}));
-        if (!OPENAI_KEY) throw new Error((err as any)?.error?.message || `Hata: ${resp.status}`);
+        const msg = (err as Record<string, unknown>)?.error;
+        if (!OPENAI_KEY) throw new Error(typeof msg === 'string' ? msg : `Hata: ${resp.status}`);
         console.warn('Claude API hatası, OpenAI fallback...');
       } else {
         const data = await resp.json();
@@ -122,7 +123,8 @@ export async function generateDefense(input: DefenseInput): Promise<DefenseResul
     });
     if (!resp.ok) {
       const err = await resp.json().catch(() => ({}));
-      throw new Error((err as any)?.error?.message || `Hata: ${resp.status}`);
+      const msg = (err as Record<string, unknown>)?.error;
+      throw new Error(typeof msg === 'string' ? msg : `Hata: ${resp.status}`);
     }
     const data = await resp.json();
     responseText = data.choices[0]?.message?.content || '';

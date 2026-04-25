@@ -72,8 +72,8 @@ export function PaytrModal({ isOpen, onClose, type, description, onPaid }: Paytr
       } else {
         throw new Error(result.error || 'PayTR token alınamadı');
       }
-    } catch (err: any) {
-      setError(err.message || 'Ödeme başlatılırken bir hata oluştu.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Ödeme başlatılırken bir hata oluştu.');
       setStep('error');
     }
   }, [userName, email, phone, address, amount, orderId, type, description]);

@@ -108,8 +108,8 @@ Araştırma sonuçlarına dayanarak SADECE şu JSON formatında yanıt ver:
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
-    const msg = (error as any)?.error?.message || '';
-    throw new Error(msg || `Analiz hatası: ${response.status}`);
+    const msg = (error as Record<string, unknown>)?.error;
+    throw new Error(typeof msg === 'string' ? msg : `Analiz hatası: ${response.status}`);
   }
 
   const data = await response.json();
@@ -207,7 +207,8 @@ ${inputText}` }
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
-    throw new Error((error as any)?.error?.message || `Analiz hatası: ${response.status}`);
+    const msg = (error as Record<string, unknown>)?.error;
+    throw new Error(typeof msg === 'string' ? msg : `Analiz hatası: ${response.status}`);
   }
 
   const data = await response.json();
@@ -229,10 +230,11 @@ export async function analyzeWithOpenAIMain(inputText: string): Promise<OpenAIAn
   if (CLAUDE_API_KEY) {
     try {
       return await analyzeWithClaude(inputText);
-    } catch (claudeErr: any) {
+    } catch (claudeErr: unknown) {
       // Bakiye yetersiz veya başka Claude hatası - OpenAI fallback
       if (!OPENAI_API_KEY) throw claudeErr;
-      console.warn('Claude API hatası, OpenAI fallback kullanılıyor:', claudeErr.message);
+      const msg = claudeErr instanceof Error ? claudeErr.message : 'Bilinmeyen hata';
+      console.warn('Claude API hatası, OpenAI fallback kullanılıyor:', msg);
     }
   }
   if (OPENAI_API_KEY) {

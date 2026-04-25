@@ -4,7 +4,7 @@ import { calculateSimilarity } from './similarityService';
 
 function extractKeywords(text: string): string[] {
   const normalized = text.toLowerCase()
-    .replace(/[.,;:!?()\[\]{}]/g, ' ')
+    .replace(/[.,;:!?()[\]{}]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
   

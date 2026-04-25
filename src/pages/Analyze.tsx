@@ -53,8 +53,9 @@ export function Analyze() {
       }
 
       navigate(`/results/${result.id}`);
-    } catch (err: any) {
-      setError(err.message || 'Analiz sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Analiz sırasında bir hata oluştu. Lütfen tekrar deneyin.';
+      setError(msg);
       setIsAnalyzing(false);
       setStep('');
     }

@@ -57,7 +57,8 @@ app.post('/api/paytr-token', async (req, res) => {
     const amountInKurus = Math.round(parseFloat(payment_amount) * 100).toString();
 
     // Build hash string according to PayTR docs
-    const hashStr = `${PAYTR_MERCHANT_ID}${user_ip}${merchant_oid}${email}${amountInKurus}0${user_basket_json}${timeout_limit}${debug_on}${test_mode}${lang}${PAYTR_MERCHANT_SALT}`;
+    // Format: merchant_id + user_ip + merchant_oid + email + payment_amount + user_basket + merchant_ok_url + merchant_fail_url + timeout_limit + debug_on + test_mode + lang + merchant_salt
+    const hashStr = `${PAYTR_MERCHANT_ID}${user_ip}${merchant_oid}${email}${amountInKurus}${user_basket_json}${merchant_ok_url}${merchant_fail_url}${timeout_limit}${debug_on}${test_mode}${lang}${PAYTR_MERCHANT_SALT}`;
     const paytrToken = crypto.createHmac('sha256', PAYTR_MERCHANT_KEY).update(hashStr).digest('base64');
 
     const params = new URLSearchParams();
@@ -75,6 +76,8 @@ app.post('/api/paytr-token', async (req, res) => {
     params.append('user_phone', user_phone);
     params.append('merchant_salt', PAYTR_MERCHANT_SALT);
     params.append('timeout_limit', String(timeout_limit));
+    params.append('no_installment', '0');
+    params.append('max_installment', '0');
     params.append('debug_on', String(debug_on));
     params.append('test_mode', String(test_mode));
     params.append('lang', lang);

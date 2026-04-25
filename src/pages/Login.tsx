@@ -24,8 +24,9 @@ export function Login() {
       await new Promise(resolve => setTimeout(resolve, 800));
       authService.login(email, password);
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Giriş yapılırken bir hata oluştu.');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Giriş yapılırken bir hata oluştu.';
+      setError(msg);
     } finally {
       setLoading(false);
     }

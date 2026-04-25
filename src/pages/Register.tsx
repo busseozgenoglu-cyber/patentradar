@@ -54,8 +54,9 @@ export function Register() {
       await new Promise(resolve => setTimeout(resolve, 800));
       authService.register(email, password, name);
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Kayıt olurken bir hata oluştu.');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Kayıt olurken bir hata oluştu.';
+      setError(msg);
     } finally {
       setLoading(false);
     }
