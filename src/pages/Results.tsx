@@ -10,8 +10,10 @@ import { analyzePatent } from '@/services/aiAnalysisService';
 import { RiskScoreRing } from '@/components/RiskScoreRing';
 import { LegalDisclaimer } from '@/components/LegalDisclaimer';
 import type { AnalysisResult } from '@/types';
+import { useSEO } from '@/hooks/useSEO';
 
 export function Results() {
+  useSEO('Analiz Raporu', 'Marka çakışma risk analizi raporunuz. Risk skoru, benzer markalar ve öneriler.');
   const { analysisId } = useParams<{ analysisId: string }>();
   const navigate = useNavigate();
   const [result, setResult] = useState<AnalysisResult | null>(null);

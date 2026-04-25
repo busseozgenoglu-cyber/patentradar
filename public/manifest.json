@@ -12,5 +12,25 @@
       "sizes": "any",
       "type": "image/svg+xml"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Analiz Başlat",
+      "short_name": "Analiz",
+      "description": "Yeni bir marka analizi başlatın",
+      "url": "#/analyze"
+    },
+    {
+      "name": "Fiyatlandırma",
+      "short_name": "Fiyatlar",
+      "description": "Fiyatlandırma planlarını görüntüleyin",
+      "url": "#/pricing"
+    },
+    {
+      "name": "İtiraz Savunma",
+      "short_name": "Savunma",
+      "description": "Marka itiraz savunma dosyası hazırlayın",
+      "url": "#/savunma"
+    }
   ]
 }

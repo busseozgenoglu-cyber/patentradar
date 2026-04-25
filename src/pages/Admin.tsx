@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import { Users, FileSearch, Activity, Crown, TrendingUp, FileText } from 'lucide-react';
 import { authService } from '@/services/authService';
 import { storageService } from '@/services/storageService';
+import { useSEO } from '@/hooks/useSEO';
 
 export function Admin() {
+  useSEO('Admin Panel', 'Yönetim paneli.');
   const navigate = useNavigate();
   const analyses = storageService.getAnalyses();
   

@@ -7,8 +7,10 @@ import { analyzePatent } from '@/services/aiAnalysisService';
 import { storageService } from '@/services/storageService';
 import { authService } from '@/services/authService';
 import { PaytrModal } from '@/components/PaytrModal';
+import { useSEO } from '@/hooks/useSEO';
 
 export function Analyze() {
+  useSEO('Marka Analizi', 'Marka adınızı, sektörünüzü ve faaliyet alanlarınızı yazın. MarkaRadar size benzer markaları ve çakışma risk değerlendirmesi sunacak.');
   const [text, setText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState('');

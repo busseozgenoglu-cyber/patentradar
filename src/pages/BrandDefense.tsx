@@ -6,6 +6,7 @@ import { downloadPDF } from '@/services/pdfService';
 import { PaytrModal } from '@/components/PaytrModal';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { useSEO } from '@/hooks/useSEO';
 
 const sectorOptions = [
   'Gıda ve İçecek', 'Tekstil ve Giyim', 'Elektronik ve Teknoloji',
@@ -27,6 +28,7 @@ const objectionReasonOptions = [
 ];
 
 export function BrandDefense() {
+  useSEO('İtiraz Savunma', 'Marka itiraz savunma dosyası hazırlayın. Profesyonel hukuki argümanlar ve analiz.');
   const [form, setForm] = useState<DefenseInput>({
     brandName: '',
     sector: '',

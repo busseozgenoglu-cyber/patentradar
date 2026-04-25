@@ -7,8 +7,10 @@ import { storageService } from '@/services/storageService';
 import { generatePDF, downloadPDF } from '@/services/pdfService';
 import { RiskScoreRing } from '@/components/RiskScoreRing';
 import type { StoredAnalysis, User } from '@/types';
+import { useSEO } from '@/hooks/useSEO';
 
 export function Dashboard() {
+  useSEO('Dashboard', 'Analiz geçmişinizi görüntüleyin ve yönetin.');
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [analyses, setAnalyses] = useState<StoredAnalysis[]>([]);

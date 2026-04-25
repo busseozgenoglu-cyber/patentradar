@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { Shield, Lock, Eye, Server, Mail } from 'lucide-react';
+import { useSEO } from '@/hooks/useSEO';
 
 export function Privacy() {
+  useSEO('Gizlilik Politikası', 'MarkaRadar gizlilik politikası. Kişisel verilerinizin korunması ve kullanımı.');
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-16">
       <div className="max-w-3xl mx-auto px-6">

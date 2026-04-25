@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, UserPlus, User } from 'lucide-react';
 import { authService } from '@/services/authService';
+import { useSEO } from '@/hooks/useSEO';
 
 function getPasswordStrength(pwd: string): { score: number; label: string; color: string } {
   let score = 0;
@@ -17,6 +18,7 @@ function getPasswordStrength(pwd: string): { score: number; label: string; color
 }
 
 export function Register() {
+  useSEO('Kayıt Ol', 'Yeni bir MarkaRadar hesabı oluşturun. Marka analizlerinizi saklayın ve yönetin.');
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

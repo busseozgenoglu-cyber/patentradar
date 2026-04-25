@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Check, ChevronDown, ChevronUp, Search } from 'lucide-react';
 import { LegalDisclaimer } from '@/components/LegalDisclaimer';
+import { useSEO } from '@/hooks/useSEO';
 const faqs = [
   {
     q: 'MarkaRadar resmi bir marka araştırması mıdır?',
@@ -23,6 +24,7 @@ const faqs = [
 ];
 
 export function Pricing() {
+  useSEO('Fiyatlandırma', 'MarkaRadar fiyatlandırma planları. Marka analizi ve itiraz savunma hizmetleri.');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (

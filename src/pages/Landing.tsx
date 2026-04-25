@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Search, FileDown, Check, BarChart3 } from 'lucide-react';
 import { LegalDisclaimer } from '@/components/LegalDisclaimer';
+import { useSEO } from '@/hooks/useSEO';
 
 function useScrollReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -30,6 +31,7 @@ const fadeUp = {
 };
 
 export function Landing() {
+  useSEO('AI Destekli Marka Çakışma Analizi', 'Markanızı başvuru öncesi AI ile analiz edin, benzer markaları bulun ve risk skorunu öğrenin.');
   return (
     <div className="min-h-screen">
       {/* Hero */}

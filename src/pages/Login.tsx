@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, LogIn, ArrowLeft, CheckCircle } from 'lucide-react';
 import { authService } from '@/services/authService';
+import { useSEO } from '@/hooks/useSEO';
 
 export function Login() {
+  useSEO('Giriş Yap', 'MarkaRadar hesabınıza giriş yapın ve analizlerinize erişin.');
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

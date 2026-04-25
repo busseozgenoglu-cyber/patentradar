@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CreditCard, Receipt, ArrowLeft, Shield, CheckCircle, AlertCircle, ExternalLink } from 'lucide-react';
 import { paymentService, type PaymentRecord } from '@/services/paymentService';
+import { useSEO } from '@/hooks/useSEO';
 
 export function Payment() {
+  useSEO('Ödeme Yönetimi', 'Ödeme geçmişinizi görüntüleyin ve kartlarınızı yönetin.');
   const navigate = useNavigate();
   const [payments] = useState<PaymentRecord[]>(paymentService.getPayments());
 
