@@ -24,7 +24,7 @@ const faqs = [
 ];
 
 export function Pricing() {
-  useSEO({ title: 'Fiyatlandırma', description: 'MarkaRadar fiyatlandırma planları. Marka analizi ve itiraz savunma hizmetleri.', canonical: 'https://patentradar.pro/#/pricing' });
+  useSEO({ title: 'Fiyatlandırma', description: 'MarkaRadar fiyatlandırma planları. Marka analizi ve itiraz savunma hizmetleri.', canonical: 'https://patentradar.pro/pricing' });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   useEffect(() => {

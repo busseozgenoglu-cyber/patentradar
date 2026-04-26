@@ -14,7 +14,7 @@ export function BlogPost() {
   useSEO({
     title: meta?.title ?? 'Blog',
     description: meta?.description ?? '',
-    canonical: `https://patentradar.pro/#/blog/${slug}`,
+    canonical: `https://patentradar.pro/blog/${slug}`,
     ogType: 'article',
   });
 
@@ -43,13 +43,13 @@ export function BlogPost() {
           '@type': 'ListItem',
           position: 2,
           name: 'Blog',
-          item: 'https://patentradar.pro/#/blog',
+          item: 'https://patentradar.pro/blog',
         },
         {
           '@type': 'ListItem',
           position: 3,
           name: meta.title,
-          item: `https://patentradar.pro/#/blog/${slug}`,
+          item: `https://patentradar.pro/blog/${slug}`,
         },
       ],
     };
@@ -70,7 +70,7 @@ export function BlogPost() {
       headline: meta.title,
       description: meta.description,
       image: 'https://patentradar.pro/hero-illustration.png',
-      url: `https://patentradar.pro/#/blog/${slug}`,
+      url: `https://patentradar.pro/blog/${slug}`,
       datePublished: meta.date + 'T08:00:00+03:00',
       dateModified: meta.date + 'T08:00:00+03:00',
       author: {
@@ -88,7 +88,7 @@ export function BlogPost() {
       },
       mainEntityOfPage: {
         '@type': 'WebPage',
-        '@id': `https://patentradar.pro/#/blog/${slug}`,
+        '@id': `https://patentradar.pro/blog/${slug}`,
       },
       articleSection: 'Marka Hukuku',
     };

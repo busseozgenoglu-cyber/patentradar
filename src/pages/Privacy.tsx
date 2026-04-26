@@ -3,7 +3,7 @@ import { Shield, Lock, Eye, Server, Mail } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 
 export function Privacy() {
-  useSEO({ title: 'Gizlilik Politikası', description: 'MarkaRadar gizlilik politikası. Kişisel verilerinizin korunması ve kullanımı.', canonical: 'https://patentradar.pro/#/gizlilik' });
+  useSEO({ title: 'Gizlilik Politikası', description: 'MarkaRadar gizlilik politikası. Kişisel verilerinizin korunması ve kullanımı.', canonical: 'https://patentradar.pro/gizlilik' });
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-16">
       <div className="max-w-3xl mx-auto px-6">

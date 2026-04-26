@@ -19,7 +19,7 @@ const stats = [
 ];
 
 export function About() {
-  useSEO({ title: 'Hakkımızda', description: 'MarkaRadar hakkında. Misyonumuz, vizyonumuz ve değerlerimiz.', canonical: 'https://patentradar.pro/#/hakkimizda' });
+  useSEO({ title: 'Hakkımızda', description: 'MarkaRadar hakkında. Misyonumuz, vizyonumuz ve değerlerimiz.', canonical: 'https://patentradar.pro/hakkimizda' });
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-16">

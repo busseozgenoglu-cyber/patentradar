@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin, Send, CheckCircle, Clock, MessageSquare } from 'lu
 import { useSEO } from '@/hooks/useSEO';
 
 export function Contact() {
-  useSEO({ title: 'İletişim', description: 'MarkaRadar ile iletişime geçin. Soru, öneri ve işbirliği talepleriniz için bize ulaşın.', canonical: 'https://patentradar.pro/#/iletisim' });
+  useSEO({ title: 'İletişim', description: 'MarkaRadar ile iletişime geçin. Soru, öneri ve işbirliği talepleriniz için bize ulaşın.', canonical: 'https://patentradar.pro/iletisim' });
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -98,7 +98,7 @@ export function Contact() {
                 <div>
                   <p className="text-sm font-semibold text-blue-900 mb-1">Hızlı Destek</p>
                   <p className="text-sm text-blue-800 leading-relaxed">
-                    Sık sorulan sorular ve hızlı yanıtlar için <a href="#/yardim-merkezi" className="underline font-medium">Yardım Merkezi</a>'ni ziyaret edebilirsiniz.
+                    Sık sorulan sorular ve hızlı yanıtlar için <a href="/yardim-merkezi" className="underline font-medium">Yardım Merkezi</a>'ni ziyaret edebilirsiniz.
                   </p>
                 </div>
               </div>

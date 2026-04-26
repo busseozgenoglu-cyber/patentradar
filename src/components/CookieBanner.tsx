@@ -38,7 +38,7 @@ export function CookieBanner() {
             <p className="text-sm text-slate-600 leading-relaxed">
               MarkaRadar, size daha iyi bir deneyim sunmak için çerezler kullanır. Zorunlu çerezler site çalışması için gereklidir.
               Analitik ve pazarlama çerezleri ise tercihinize bağlıdır. Daha fazla bilgi için{' '}
-              <a href="#/gizlilik" className="text-blue-600 hover:underline font-medium">Gizlilik Politikamızı</a> inceleyebilirsiniz.
+              <a href="/gizlilik" className="text-blue-600 hover:underline font-medium">Gizlilik Politikamızı</a> inceleyebilirsiniz.
             </p>
 
             {detailOpen && (

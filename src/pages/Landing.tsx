@@ -31,7 +31,7 @@ const fadeUp = {
 };
 
 export function Landing() {
-  useSEO('AI Destekli Marka Çakışma Analizi', 'Markanızı başvuru öncesi AI ile analiz edin, benzer markaları bulun ve risk skorunu öğrenin.');
+  useSEO('Marka Patent Tescil ve Çakışma Analizi', 'Marka patent tescili öncesi AI destekli çakışma analizi. Benzer markaları tespit edin, risk skorunuzu öğrenin ve markanızı güvence altına alın.');
 
   // FAQPage Schema.org
   useEffect(() => {
@@ -131,9 +131,9 @@ export function Landing() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(59,130,246,0.04)_0%,_transparent_60%)]" />
         <div className="relative max-w-3xl mx-auto px-6 text-center">
           <motion.div initial="hidden" animate="visible" className="space-y-6">
-            <motion.p custom={0} variants={fadeUp} className="text-xs sm:text-sm font-semibold tracking-[0.15em] text-blue-600 uppercase">AI Destekli Marka Çakışma ve Risk Analizi</motion.p>
-            <motion.h1 custom={1} variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight">Markanızı başvuru öncesi risk analizine tabi tutun</motion.h1>
-            <motion.p custom={2} variants={fadeUp} className="text-lg text-slate-600 max-w-xl mx-auto leading-relaxed">MarkaRadar, marka adı ve konseptinizi analiz ederek benzer markaları bulur, çakışma riskini değerlendirir ve markanızı koruma yolları önerir.</motion.p>
+            <motion.p custom={0} variants={fadeUp} className="text-xs sm:text-sm font-semibold tracking-[0.15em] text-blue-600 uppercase">Marka Patent Tescil Öncesi AI Analizi</motion.p>
+            <motion.h1 custom={1} variants={fadeUp} className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight">Marka patent tescili öncesi AI destekli risk analizi yapın</motion.h1>
+            <motion.p custom={2} variants={fadeUp} className="text-lg text-slate-600 max-w-xl mx-auto leading-relaxed">MarkaRadar ile marka patent başvurunuz öncesi benzer markaları tespit edin, çakışma riskini değerlendirin ve markanızı hukuki güvence altına alın.</motion.p>
             <motion.div custom={3} variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
               <Link to="/analyze" className="inline-flex items-center gap-2 px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all hover:shadow-xl hover:shadow-blue-500/20 hover:-translate-y-0.5">
                 Marka Analizi Başlat <ArrowRight className="w-5 h-5" />
@@ -305,14 +305,14 @@ export function Landing() {
       <section className="bg-white py-20 lg:py-24 border-t border-slate-100;">
         <div className="max-w-4xl mx-auto px-6">
           <ScrollReveal className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-3xl font-bold text-slate-900 mb-3">Marka Tescil Öncesi Neden Araştırma Yapmalısınız?</h2>
-            <p className="text-slate-600">Türk Patent ve Marka Kurumu'na başvuru öncesinde yapılacak araştırma, markanızın geleceğini korur.</p>
+            <h2 className="text-3xl font-bold text-slate-900 mb-3">Marka Patent Tescil Öncesi Neden Araştırma Yapmalısınız?</h2>
+            <p className="text-slate-600">Marka patent başvurusu öncesi çakışma analizi, markanızın geleceğini korur ve hukuki riskleri minimize eder.</p>
           </ScrollReveal>
           <ScrollReveal>
             <div className="space-y-4 text-slate-600 leading-relaxed">
-              <p>Marka tescil öncesi çakışma analizi, Türkiye'de marka sahibi olmak isteyen her girişimci için zorunlu bir adımdır. <strong className="text-slate-800">Türkpatent</strong> üzerinden yapılan resmi sorgulamaların yanı sıra, web'de aktif olan benzer isimde işletmeleri tespit etmek de büyük önem taşır. MarkaRadar, yapay zeka destekli algoritmaları ile hem tescilli hem de tescilsiz markaları analiz ederek size kapsamlı bir risk raporu sunar.</p>
-              <p>Nice sınıfı seçimi, markanızın hangi alanlarda korunacağını belirler. Gıda, kozmetik, tekstil veya teknoloji sektöründe faaliyet gösteriyorsanız, doğru Nice sınıfını seçmek ve bu sınıftaki benzer markaları incelemek, başvuru sürecinizin başarı şansını doğrudan etkiler. MarkaRadar analizi sonrasında elde edeceğiniz <strong className="text-slate-800">risk skoru</strong>, markanızın çakışma potansiyelini sayısal olarak ifade eder ve karar verme sürecinizi kolaylaştırır.</p>
-              <p>İtiraz savunma hizmetimiz ile markanıza yapılan haksız itirazlara karşı hukuki temelli, profesyonel savunma dosyaları hazırlayabilirsiniz. <Link to="/analyze" className="text-blue-600 hover:underline font-medium">Hemen analiz başlatın</Link> ve markanızı koruma altına alın.</p>
+              <p><strong className="text-slate-800">Marka patent</strong> tescili, bir işletmenin en değerli varlıklarından birini koruma altına almanın en etkili yoludur. Türkiye'de marka sahibi olmak isteyen her girişimci için <strong>marka patent</strong> başvurusu öncesi çakışma analizi zorunlu bir adımdır. <strong className="text-slate-800">Türkpatent</strong> üzerinden yapılan resmi sorgulamaların yanı sıra, web'de aktif olan benzer isimde işletmeleri tespit etmek de büyük önem taşır. MarkaRadar, yapay zeka destekli algoritmaları ile hem tescilli hem de tescilsiz markaları analiz ederek size kapsamlı bir risk raporu sunar.</p>
+              <p><strong className="text-slate-800">Patent marka</strong> farkını bilmek de başvuru sürecinde kritik öneme sahiptir. Marka, bir ürün veya hizmeti diğerlerinden ayıran işaret iken; patent, teknik bir buluşu korur. <strong>Marka patent</strong> birlikteliği, ürününüzün hem ticari kimliğini hem de teknik yeniliğini aynı anda korumanızı sağlar. Nice sınıfı seçimi, markanızın hangi alanlarda korunacağını belirler. Gıda, kozmetik, tekstil veya teknoloji sektöründe faaliyet gösteriyorsanız, doğru Nice sınıfını seçmek ve bu sınıftaki benzer markaları incelemek, başvuru sürecinizin başarı şansını doğrudan etkiler.</p>
+              <p>MarkaRadar analizi sonrasında elde edeceğiniz <strong className="text-slate-800">risk skoru</strong>, markanızın çakışma potansiyelini sayısal olarak ifade eder ve karar verme sürecinizi kolaylaştırır. İtiraz savunma hizmetimiz ile markanıza yapılan haksız itirazlara karşı hukuki temelli, profesyonel savunma dosyaları hazırlayabilirsiniz. <Link to="/analyze" className="text-blue-600 hover:underline font-medium">Hemen marka patent analizi başlatın</Link> ve markanızı koruma altına alın.</p>
             </div>
           </ScrollReveal>
         </div>

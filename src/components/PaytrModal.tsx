@@ -49,8 +49,8 @@ export function PaytrModal({ isOpen, onClose, type, description, onPaid }: Paytr
 
     try {
       const userIp = await paytrService.getClientIp();
-      const okUrl = `${window.location.origin}/#/odeme/basarili`;
-      const failUrl = `${window.location.origin}/#/odeme/basarisiz`;
+      const okUrl = `${window.location.origin}/odeme/basarili`;
+      const failUrl = `${window.location.origin}/odeme/basarisiz`;
 
       const result = await paytrService.getToken({
         email,

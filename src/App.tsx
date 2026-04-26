@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Suspense, lazy } from 'react';
 import { Navbar } from '@/components/Navbar';
@@ -93,11 +93,11 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <ErrorBoundary>
         <AnimatedRoutes />
       </ErrorBoundary>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

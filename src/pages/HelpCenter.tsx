@@ -32,7 +32,7 @@ const faqs = [
 ];
 
 export function HelpCenter() {
-  useSEO({ title: 'Yardım Merkezi', description: 'MarkaRadar hakkında sık sorulan sorular ve yardım kaynakları.', canonical: 'https://patentradar.pro/#/yardim-merkezi' });
+  useSEO({ title: 'Yardım Merkezi', description: 'MarkaRadar hakkında sık sorulan sorular ve yardım kaynakları.', canonical: 'https://patentradar.pro/yardim-merkezi' });
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [openIndex, setOpenIndex] = useState<number | null>(null);

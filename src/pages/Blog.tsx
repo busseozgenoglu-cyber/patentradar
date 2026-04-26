@@ -9,7 +9,7 @@ export function Blog() {
   useSEO({
     title: 'Blog',
     description: 'Marka tescili, çakışma analizi ve hukuki süreçler hakkında kapsamlı rehberler ve güncel bilgiler.',
-    canonical: 'https://patentradar.pro/#/blog',
+    canonical: 'https://patentradar.pro/blog',
   });
 
   // BlogPosting list Schema.org
@@ -20,7 +20,7 @@ export function Blog() {
       itemListElement: blogPosts.map((post, index) => ({
         '@type': 'ListItem',
         position: index + 1,
-        url: `https://patentradar.pro/#/blog/${post.slug}`,
+        url: `https://patentradar.pro/blog/${post.slug}`,
         name: post.title,
       })),
     };

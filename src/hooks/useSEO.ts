@@ -36,7 +36,7 @@ function applySEO(opts: SEOOptions) {
 
   const ogTags: Record<string, string> = {
     'og:title': fullTitle,
-    'og:description': description || 'MarkaRadar - AI destekli marka çakışma ve risk analizi platformu.',
+    'og:description': description || 'MarkaRadar - Marka patent tescili öncesi AI destekli çakışma analizi platformu.',
     'og:type': ogType,
     'og:url': canonical || 'https://patentradar.pro/',
     'og:image': ogImage,
@@ -59,7 +59,7 @@ function applySEO(opts: SEOOptions) {
   const twTags: Record<string, string> = {
     'twitter:card': 'summary_large_image',
     'twitter:title': fullTitle,
-    'twitter:description': description || 'MarkaRadar - AI destekli marka çakışma ve risk analizi platformu.',
+    'twitter:description': description || 'MarkaRadar - Marka patent tescili öncesi AI destekli çakışma analizi platformu.',
     'twitter:image': ogImage,
   };
 

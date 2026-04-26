@@ -13,7 +13,7 @@ export function Analyze() {
   useSEO({
     title: 'Marka Analizi',
     description: 'Marka adınızı, sektörünüzü ve faaliyet alanlarınızı yazın. MarkaRadar size benzer markaları ve çakışma risk değerlendirmesi sunacak.',
-    canonical: 'https://patentradar.pro/#/analyze',
+    canonical: 'https://patentradar.pro/analyze',
   });
   const [text, setText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
