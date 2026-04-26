@@ -28,7 +28,7 @@ export function Footer() {
             <p className="text-sm leading-relaxed mb-4">
               AI destekli marka çakışma ve risk analizi platformu. Markanızı başvuru öncesi analiz edin.
             </p>
-            <p className="text-xs text-slate-500">© 2025 MarkaRadar. Tüm hakları saklıdır.</p>
+            <p className="text-xs text-slate-500">© {new Date().getFullYear()} MarkaRadar. Tüm hakları saklıdır.</p>
           </div>
 
           <div>

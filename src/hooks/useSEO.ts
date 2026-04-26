@@ -10,7 +10,7 @@ interface SEOOptions {
 }
 
 function applySEO(opts: SEOOptions) {
-  const { title, description, canonical, ogType = 'website', ogImage = '/hero-illustration.png', noIndex = false } = opts;
+  const { title, description, canonical, ogType = 'website', ogImage = 'https://patentradar.pro/hero-illustration.png', noIndex = false } = opts;
   const fullTitle = title ? `${title} | MarkaRadar` : 'MarkaRadar';
   document.title = fullTitle;
 

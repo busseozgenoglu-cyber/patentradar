@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Search, FileDown, Check, BarChart3, ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
-import { useSEO } from '@/hooks/useSEO';
 import { LegalDisclaimer } from '@/components/LegalDisclaimer';
 import { useSEO } from '@/hooks/useSEO';
 
@@ -54,6 +53,54 @@ export function Landing() {
     script.id = 'landing-faq-schema';
     document.head.appendChild(script);
     return () => { document.getElementById('landing-faq-schema')?.remove(); };
+  }, []);
+
+  // HowTo Schema.org
+  useEffect(() => {
+    const howToSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'HowTo',
+      name: 'Marka Analizi Nasıl Yapılır?',
+      description: 'Markanızı MarkaRadar ile analiz etmek için 4 basit adım.',
+      totalTime: 'PT15S',
+      estimatedCost: {
+        '@type': 'MonetaryAmount',
+        currency: 'TRY',
+        value: '299',
+      },
+      step: [
+        {
+          '@type': 'HowToStep',
+          position: 1,
+          name: 'Markanızı Anlatın',
+          text: 'Marka adınızı, sektörünüzü ve faaliyet alanlarınızı yazın. Ne kadar detaylı olursa sonuç o kadar doğru olur.',
+        },
+        {
+          '@type': 'HowToStep',
+          position: 2,
+          name: 'AI Analiz Etsin',
+          text: 'Yapay zeka markanızı yapılandırır: sektör, faaliyet alanı, hedef kitle ve risk alanlarını çıkarır.',
+        },
+        {
+          '@type': 'HowToStep',
+          position: 3,
+          name: 'Çakışmaları Görün',
+          text: 'Veri tabanında benzer marka kayıtlarını bulur ve çakışma risk skoru oluşturur.',
+        },
+        {
+          '@type': 'HowToStep',
+          position: 4,
+          name: 'Raporunuzu Alın',
+          text: 'Detaylı risk analiz raporunu görüntüleyin, PDF olarak indirin ve markanızı koruma önerilerini değerlendirin.',
+        },
+      ],
+    };
+    const hScript = document.createElement('script');
+    hScript.type = 'application/ld+json';
+    hScript.text = JSON.stringify(howToSchema);
+    hScript.id = 'landing-howto-schema';
+    document.head.appendChild(hScript);
+    return () => { document.getElementById('landing-howto-schema')?.remove(); };
   }, []);
 
   // Breadcrumb Schema.org
