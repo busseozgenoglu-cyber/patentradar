@@ -24,6 +24,16 @@ const posts = [
   { slug: 'marka-ismini-degistirmek', title: 'Marka İsmini Değiştirmek Mümkün mü?', excerpt: 'Tescilli marka adı değişikliği, yeni başvuru şartları ve süreç.', date: '2026-04-25' },
   { slug: 'marka-tescili-olmadan-satis', title: 'Marka Tescili Olmadan Satış Yapmak Riskli mi?', excerpt: 'Tescilsiz marka kullanımının hukuki riskleri, ihlal durumunda yapılacaklar.', date: '2026-04-25' },
   { slug: 'marka-arastirmasi', title: 'Marka Araştırması Nasıl Yapılır? Profesyonel Rehber', excerpt: 'Başvuru öncesi kapsamlı marka araştırması, ücretsiz ve ücretli araçlar, AI destekli analiz.', date: '2026-04-25' },
+  { slug: 'ai-destekli-marka-analizi', title: 'AI Destekli Marka Analizi: Geleceğin Koruma Teknolojisi', excerpt: 'Yapay zeka ile marka çakışma analizi nasıl yapılır? AI araçları, risk skorlama ve otomasyon.', date: '2026-04-25' },
+  { slug: 'startup-marka-tescili', title: 'Startup Marka Tescili: Girişimciler İçin Rehber', excerpt: 'Girişimciler için marka tescilinin önemi, erken aşama stratejileri ve bütçe dostu yöntemler.', date: '2026-04-25' },
+  { slug: 'marka-koruma-stratejileri', title: 'Marka Koruma Stratejileri: Kapsamlı İşletme Rehberi', excerpt: 'Tescil sonrası marka izleme, dijital koruma, ihlal mücadelesi ve hukuki stratejiler.', date: '2026-04-25' },
+  { slug: 'patent-ve-marka-farki', title: 'Patent ve Marka Farkı Nedir?', excerpt: 'Patent ve marka arasındaki hukuki ve kavramsal farklar, birlikte kullanım stratejileri.', date: '2026-04-25' },
+  { slug: 'endustriyel-tasarim-tescili', title: 'Endüstriyel Tasarım Tescili Nasıl Yapılır?', excerpt: 'Ürün görünümü koruma, başvuru süreci, maliyet ve marka ile birlikte kullanım.', date: '2026-04-25' },
+  { slug: 'marka-lisanslama-rehberi', title: 'Marka Lisanslama Rehberi: Gelir Getiren Strateji', excerpt: 'Marka lisanslama türleri, sözleşme şartları, royalty modelleri ve risk yönetimi.', date: '2026-04-25' },
+  { slug: 'sosyal-medya-marka-koruma', title: 'Sosyal Medyada Marka Koruma: Etkili Stratejiler', excerpt: 'Instagram, TikTok ve Facebookta marka ihlali tespiti, platform bildirimleri ve kriz yönetimi.', date: '2026-04-25' },
+  { slug: 'marka-davasi-sureci', title: 'Marka Davası Süreci: Hukuki Rehber', excerpt: 'Marka davası türleri, delil toplama, mahkeme süreci, maliyet ve alternatif çözümler.', date: '2026-04-25' },
+  { slug: 'eticaret-marka-ihlali', title: 'E-Ticarette Marka İhlali: Korunma ve Çözüm Rehberi', excerpt: 'Online platformlarda taklit ürün, izinsiz kullanım ve marka ihlali ile mücadele.', date: '2026-04-25' },
+  { slug: 'marka-stratejisi-olusturma', title: 'Marka Stratejisi Oluşturma: Başarıya Götüren Rehber', excerpt: 'Marka kimliği, hedef kitle, konumlandırma, görsel dil ve iletişim stratejisi.', date: '2026-04-25' },
 ];
 
 export function Blog() {
@@ -46,7 +56,7 @@ export function Blog() {
               key={post.slug}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
+              transition={{ delay: i * 0.03 }}
             >
               <Link
                 to={`/blog/${post.slug}`}

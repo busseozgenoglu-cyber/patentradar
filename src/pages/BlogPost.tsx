@@ -25,6 +25,16 @@ const postMeta: Record<string, { title: string; description: string }> = {
   'marka-ismini-degistirmek': { title: 'Marka İsmini Değiştirmek Mümkün mü?', description: 'Tescilli marka adı değişikliği, yeni başvuru şartları ve süreç.' },
   'marka-tescili-olmadan-satis': { title: 'Marka Tescili Olmadan Satış Yapmak Riskli mi?', description: 'Tescilsiz marka kullanımının hukuki riskleri, ihlal durumunda yapılacaklar.' },
   'marka-arastirmasi': { title: 'Marka Araştırması Nasıl Yapılır? Profesyonel Rehber', description: 'Başvuru öncesi kapsamlı marka araştırması, ücretsiz ve ücretli araçlar, AI destekli analiz.' },
+  'ai-destekli-marka-analizi': { title: 'AI Destekli Marka Analizi: Geleceğin Koruma Teknolojisi', description: 'Yapay zeka ile marka çakışma analizi nasıl yapılır? AI araçları, risk skorlama ve otomasyon.' },
+  'startup-marka-tescili': { title: 'Startup Marka Tescili: Girişimciler İçin Rehber', description: 'Girişimciler için marka tescilinin önemi, erken aşama stratejileri ve bütçe dostu yöntemler.' },
+  'marka-koruma-stratejileri': { title: 'Marka Koruma Stratejileri: Kapsamlı İşletme Rehberi', description: 'Tescil sonrası marka izleme, dijital koruma, ihlal mücadelesi ve hukuki stratejiler.' },
+  'patent-ve-marka-farki': { title: 'Patent ve Marka Farkı Nedir?', description: 'Patent ve marka arasındaki hukuki ve kavramsal farklar, birlikte kullanım stratejileri.' },
+  'endustriyel-tasarim-tescili': { title: 'Endüstriyel Tasarım Tescili Nasıl Yapılır?', description: 'Ürün görünümü koruma, başvuru süreci, maliyet ve marka ile birlikte kullanım.' },
+  'marka-lisanslama-rehberi': { title: 'Marka Lisanslama Rehberi: Gelir Getiren Strateji', description: 'Marka lisanslama türleri, sözleşme şartları, royalty modelleri ve risk yönetimi.' },
+  'sosyal-medya-marka-koruma': { title: 'Sosyal Medyada Marka Koruma: Etkili Stratejiler', description: 'Instagram, TikTok ve Facebookta marka ihlali tespiti, platform bildirimleri ve kriz yönetimi.' },
+  'marka-davasi-sureci': { title: 'Marka Davası Süreci: Hukuki Rehber', description: 'Marka davası türleri, delil toplama, mahkeme süreci, maliyet ve alternatif çözümler.' },
+  'eticaret-marka-ihlali': { title: 'E-Ticarette Marka İhlali: Korunma ve Çözüm Rehberi', description: 'Online platformlarda taklit ürün, izinsiz kullanım ve marka ihlali ile mücadele.' },
+  'marka-stratejisi-olusturma': { title: 'Marka Stratejisi Oluşturma: Başarıya Götüren Rehber', description: 'Marka kimliği, hedef kitle, konumlandırma, görsel dil ve iletişim stratejisi.' },
 };
 
 export function BlogPost() {
