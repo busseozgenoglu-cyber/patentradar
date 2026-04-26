@@ -4,7 +4,7 @@ import { Home, Search } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
 
 export function NotFound() {
-  useSEO('Sayfa Bulunamadı', 'Aradığınız sayfa bulunamadı. Ana sayfaya dönün veya yeni bir analiz başlatın.');
+  useSEO({ title: 'Sayfa Bulunamadı', description: 'Aradığınız sayfa bulunamadı. Ana sayfaya dönün veya yeni bir analiz başlatın.', noIndex: true });
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center pt-16 pb-8 px-6">
       <motion.div

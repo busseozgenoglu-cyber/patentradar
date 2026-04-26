@@ -6,7 +6,7 @@ import { paymentService, type PaymentRecord } from '@/services/paymentService';
 import { useSEO } from '@/hooks/useSEO';
 
 export function Payment() {
-  useSEO('Ödeme Yönetimi', 'Ödeme geçmişinizi görüntüleyin ve kartlarınızı yönetin.');
+  useSEO({ title: 'Ödeme Yönetimi', description: 'Ödeme geçmişinizi görüntüleyin ve kartlarınızı yönetin.', noIndex: true });
   const navigate = useNavigate();
   const [payments] = useState<PaymentRecord[]>(paymentService.getPayments());
 

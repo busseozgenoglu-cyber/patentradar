@@ -28,7 +28,7 @@ const objectionReasonOptions = [
 ];
 
 export function BrandDefense() {
-  useSEO('İtiraz Savunma', 'Marka itiraz savunma dosyası hazırlayın. Profesyonel hukuki argümanlar ve analiz.');
+  useSEO({ title: 'İtiraz Savunma', description: 'Marka itiraz savunma dosyası hazırlayın. Profesyonel hukuki argümanlar ve analiz.', canonical: 'https://patentradar.pro/#/savunma' });
   const [form, setForm] = useState<DefenseInput>({
     brandName: '',
     sector: '',

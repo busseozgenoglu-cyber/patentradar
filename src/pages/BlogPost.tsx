@@ -43,7 +43,12 @@ export function BlogPost() {
   const [loading, setLoading] = useState(true);
   const meta = slug ? postMeta[slug] : null;
 
-  useSEO(meta?.title ?? 'Blog', meta?.description ?? '');
+  useSEO({
+    title: meta?.title ?? 'Blog',
+    description: meta?.description ?? '',
+    canonical: `https://patentradar.pro/#/blog/${slug}`,
+    ogType: 'article',
+  });
 
   useEffect(() => {
     if (!slug) return;
@@ -52,6 +57,78 @@ export function BlogPost() {
       .then(setHtml)
       .finally(() => setLoading(false));
   }, [slug]);
+
+  // Breadcrumb Schema.org
+  useEffect(() => {
+    if (!meta || !slug) return;
+    const breadcrumbSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Ana Sayfa',
+          item: 'https://patentradar.pro/',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Blog',
+          item: 'https://patentradar.pro/#/blog',
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: meta.title,
+          item: `https://patentradar.pro/#/blog/${slug}`,
+        },
+      ],
+    };
+    const bScript = document.createElement('script');
+    bScript.type = 'application/ld+json';
+    bScript.text = JSON.stringify(breadcrumbSchema);
+    bScript.id = 'blogpost-breadcrumb-schema';
+    document.head.appendChild(bScript);
+    return () => { document.getElementById('blogpost-breadcrumb-schema')?.remove(); };
+  }, [meta, slug]);
+
+  // Article Schema.org
+  useEffect(() => {
+    if (!meta || !slug) return;
+    const articleSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: meta.title,
+      description: meta.description,
+      url: `https://patentradar.pro/#/blog/${slug}`,
+      datePublished: '2026-04-25T08:00:00+03:00',
+      dateModified: '2026-04-25T08:00:00+03:00',
+      author: {
+        '@type': 'Organization',
+        name: 'MarkaRadar',
+        url: 'https://patentradar.pro/',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'MarkaRadar',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://patentradar.pro/hero-illustration.png',
+        },
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': `https://patentradar.pro/#/blog/${slug}`,
+      },
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(articleSchema);
+    script.id = 'blogpost-article-schema';
+    document.head.appendChild(script);
+    return () => { document.getElementById('blogpost-article-schema')?.remove(); };
+  }, [meta, slug]);
 
   if (loading) {
     return (
@@ -76,6 +153,17 @@ export function BlogPost() {
     <div className="min-h-screen bg-slate-50 pt-24 pb-16">
       <div className="max-w-3xl mx-auto px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          {/* Breadcrumb */}
+          <nav aria-label="breadcrumb" className="mb-4">
+            <ol className="flex items-center gap-2 text-sm text-slate-400">
+              <li><Link to="/" className="hover:text-slate-600 transition-colors">Ana Sayfa</Link></li>
+              <li>/</li>
+              <li><Link to="/blog" className="hover:text-slate-600 transition-colors">Blog</Link></li>
+              <li>/</li>
+              <li className="text-slate-600 max-w-[200px] truncate" title={meta.title}>{meta.title}</li>
+            </ol>
+          </nav>
+
           <Link to="/blog" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-800 mb-6 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Bloga Dön
           </Link>

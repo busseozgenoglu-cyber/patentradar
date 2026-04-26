@@ -8,7 +8,7 @@ import { paymentService } from '@/services/paymentService';
 import { useSEO } from '@/hooks/useSEO';
 
 export function Admin() {
-  useSEO('Admin Panel', 'Yönetim paneli.');
+  useSEO({ title: 'Admin Panel', description: 'Yönetim paneli.', noIndex: true });
   const navigate = useNavigate();
   const analyses = storageService.getAnalyses();
   const guestAnalyses = storageService.getGuestAnalyses();

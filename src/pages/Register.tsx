@@ -18,7 +18,7 @@ function getPasswordStrength(pwd: string): { score: number; label: string; color
 }
 
 export function Register() {
-  useSEO('Kayıt Ol', 'Yeni bir MarkaRadar hesabı oluşturun. Marka analizlerinizi saklayın ve yönetin.');
+  useSEO({ title: 'Kayıt Ol', description: 'Yeni bir MarkaRadar hesabı oluşturun. Marka analizlerinizi saklayın ve yönetin.', noIndex: true });
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

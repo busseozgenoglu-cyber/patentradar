@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin, Send, CheckCircle, Clock, MessageSquare } from 'lu
 import { useSEO } from '@/hooks/useSEO';
 
 export function Contact() {
-  useSEO('İletişim', 'MarkaRadar ile iletişime geçin. Soru, öneri ve işbirliği talepleriniz için bize ulaşın.');
+  useSEO({ title: 'İletişim', description: 'MarkaRadar ile iletişime geçin. Soru, öneri ve işbirliği talepleriniz için bize ulaşın.', canonical: 'https://patentradar.pro/#/iletisim' });
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);

@@ -10,7 +10,7 @@ import type { StoredAnalysis, User } from '@/types';
 import { useSEO } from '@/hooks/useSEO';
 
 export function Dashboard() {
-  useSEO('Dashboard', 'Analiz geçmişinizi görüntüleyin ve yönetin.');
+  useSEO({ title: 'Dashboard', description: 'Analiz geçmişinizi görüntüleyin ve yönetin.', noIndex: true });
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [analyses, setAnalyses] = useState<StoredAnalysis[]>([]);

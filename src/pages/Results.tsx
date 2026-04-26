@@ -13,7 +13,7 @@ import type { AnalysisResult } from '@/types';
 import { useSEO } from '@/hooks/useSEO';
 
 export function Results() {
-  useSEO('Analiz Raporu', 'Marka çakışma risk analizi raporunuz. Risk skoru, benzer markalar ve öneriler.');
+  useSEO({ title: 'Analiz Raporu', description: 'Marka çakışma risk analizi raporunuz. Risk skoru, benzer markalar ve öneriler.', noIndex: true });
   const { analysisId } = useParams<{ analysisId: string }>();
   const navigate = useNavigate();
   const [result, setResult] = useState<AnalysisResult | null>(null);

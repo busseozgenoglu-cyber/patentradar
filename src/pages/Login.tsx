@@ -6,7 +6,7 @@ import { authService } from '@/services/authService';
 import { useSEO } from '@/hooks/useSEO';
 
 export function Login() {
-  useSEO('Giriş Yap', 'MarkaRadar hesabınıza giriş yapın ve analizlerinize erişin.');
+  useSEO({ title: 'Giriş Yap', description: 'MarkaRadar hesabınıza giriş yapın ve analizlerinize erişin.', noIndex: true });
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

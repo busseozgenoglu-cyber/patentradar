@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Search, FileDown, Check, BarChart3, ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
+import { useSEO } from '@/hooks/useSEO';
 import { LegalDisclaimer } from '@/components/LegalDisclaimer';
 import { useSEO } from '@/hooks/useSEO';
 
@@ -32,6 +33,50 @@ const fadeUp = {
 
 export function Landing() {
   useSEO('AI Destekli Marka Çakışma Analizi', 'Markanızı başvuru öncesi AI ile analiz edin, benzer markaları bulun ve risk skorunu öğrenin.');
+
+  // FAQPage Schema.org
+  useEffect(() => {
+    const faqSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: landingFaqs.map(f => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.a,
+        },
+      })),
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(faqSchema);
+    script.id = 'landing-faq-schema';
+    document.head.appendChild(script);
+    return () => { document.getElementById('landing-faq-schema')?.remove(); };
+  }, []);
+
+  // Breadcrumb Schema.org
+  useEffect(() => {
+    const breadcrumbSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Ana Sayfa',
+          item: 'https://patentradar.pro/',
+        },
+      ],
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(breadcrumbSchema);
+    script.id = 'landing-breadcrumb-schema';
+    document.head.appendChild(script);
+    return () => { document.getElementById('landing-breadcrumb-schema')?.remove(); };
+  }, []);
   return (
     <div className="min-h-screen">
       {/* Hero */}

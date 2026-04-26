@@ -10,7 +10,11 @@ import { PaytrModal } from '@/components/PaytrModal';
 import { useSEO } from '@/hooks/useSEO';
 
 export function Analyze() {
-  useSEO('Marka Analizi', 'Marka adınızı, sektörünüzü ve faaliyet alanlarınızı yazın. MarkaRadar size benzer markaları ve çakışma risk değerlendirmesi sunacak.');
+  useSEO({
+    title: 'Marka Analizi',
+    description: 'Marka adınızı, sektörünüzü ve faaliyet alanlarınızı yazın. MarkaRadar size benzer markaları ve çakışma risk değerlendirmesi sunacak.',
+    canonical: 'https://patentradar.pro/#/analyze',
+  });
   const [text, setText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState('');

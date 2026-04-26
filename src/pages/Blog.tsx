@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, ArrowRight, BookOpen } from 'lucide-react';
 import { useSEO } from '@/hooks/useSEO';
+import { useEffect } from 'react';
 
 const posts = [
   { slug: 'marka-tescil-nasil-yapilir', title: 'Marka Tescili Nasıl Yapılır? Adım Adım Rehber 2026', excerpt: 'Türkiye\'de marka tescil başvurusu nasıl yapılır? Gerekli evraklar, ücretler, süreç ve dikkat edilmesi gerekenler detaylı anlatım.', date: '2026-04-25' },
@@ -37,7 +38,31 @@ const posts = [
 ];
 
 export function Blog() {
-  useSEO('Blog', 'Marka tescili, çakışma analizi ve hukuki süreçler hakkında kapsamlı rehberler ve güncel bilgiler.');
+  useSEO({
+    title: 'Blog',
+    description: 'Marka tescili, çakışma analizi ve hukuki süreçler hakkında kapsamlı rehberler ve güncel bilgiler.',
+    canonical: 'https://patentradar.pro/#/blog',
+  });
+
+  // BlogPosting list Schema.org
+  useEffect(() => {
+    const listSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      itemListElement: posts.map((post, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `https://patentradar.pro/#/blog/${post.slug}`,
+        name: post.title,
+      })),
+    };
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(listSchema);
+    script.id = 'blog-list-schema';
+    document.head.appendChild(script);
+    return () => { document.getElementById('blog-list-schema')?.remove(); };
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-16">
