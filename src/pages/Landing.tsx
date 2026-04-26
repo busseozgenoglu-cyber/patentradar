@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Search, FileDown, Check, BarChart3 } from 'lucide-react';
+import { ArrowRight, Search, FileDown, Check, BarChart3, ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 import { LegalDisclaimer } from '@/components/LegalDisclaimer';
 import { useSEO } from '@/hooks/useSEO';
 
@@ -195,8 +195,22 @@ export function Landing() {
         </div>
       </section>
 
+      {/* SSS / FAQ */}
+      <section className="bg-slate-50 py-20 lg:py-24 border-t border-slate-100">
+        <div className="max-w-4xl mx-auto px-6">
+          <ScrollReveal className="text-center max-w-2xl mx-auto mb-14">
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-xl mb-4">
+              <HelpCircle className="w-6 h-6 text-blue-600" />
+            </div>
+            <h2 className="text-3xl font-bold text-slate-900 mb-3">Sıkça Sorulan Sorular</h2>
+            <p className="text-slate-600">Marka tescili, analiz süreci ve ücretler hakkında merak edilenler</p>
+          </ScrollReveal>
+          <LandingFAQ />
+        </div>
+      </section>
+
       {/* SEO Content */}
-      <section className="bg-white py-20 lg:py-24 border-t border-slate-100">
+      <section className="bg-white py-20 lg:py-24 border-t border-slate-100;">
         <div className="max-w-4xl mx-auto px-6">
           <ScrollReveal className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="text-3xl font-bold text-slate-900 mb-3">Marka Tescil Öncesi Neden Araştırma Yapmalısınız?</h2>
@@ -218,6 +232,78 @@ export function Landing() {
           <ScrollReveal><LegalDisclaimer /></ScrollReveal>
         </div>
       </section>
+    </div>
+  );
+}
+
+const landingFaqs = [
+  {
+    q: 'MarkaRadar nedir ve nasıl çalışır?',
+    a: 'MarkaRadar, yapay zeka destekli bir marka çakışma ve risk analizi platformudur. Marka adınızı ve faaliyet alanınızı girersiniz, sistem benzer markaları tarar, risk skoru üretir ve detaylı PDF rapor sunar. Analiz süreci genellikle 15-30 saniye sürer.'
+  },
+  {
+    q: 'Marka analizi ücreti ne kadar?',
+    a: 'Her marka analizi tek fiyat üzerinden 299 TL olarak sunulmaktadır. Bu ücret kapsamında detaylı çakışma analizi, 0-100 arası risk skoru, benzer marka listesi, özgünleşme önerileri ve profesyonel PDF rapor elde edersiniz.'
+  },
+  {
+    q: 'MarkaRadar resmi bir marka araştırması mıdır?',
+    a: 'Hayır, MarkaRadar yalnızca ön değerlendirme amaçlı bir araçtır. Kesin hukuki görüş veya resmi marka araştırması yerine geçmez. Resmi başvuru öncesinde Türk Patent ve Marka Kurumu (TÜRKPATENT) üzerinden mutlaka sorgulama yapmanızı öneririz.'
+  },
+  {
+    q: 'Marka tescil süreci ne kadar sürer?',
+    a: 'Türkiyede marka tescil süreci, itirazsız bir başvuru için ortalama 8-12 ay sürer. İtirazlı süreçler 2-3 yıla kadar uzayabilir. MarkaRadar ile başvuru öncesi çakışma analizi yaparak ret ve itiraz riskini önemli ölçüde azaltabilirsiniz.'
+  },
+  {
+    q: 'Nice sınıfı nedir ve nasıl seçilir?',
+    a: 'Nice sınıfları, markaların hangi mal ve hizmet kategorilerinde korunacağını belirleyen uluslararası bir sınıflandırma sistemidir. Toplam 45 sınıf bulunur. Faaliyet alanınıza en uygun sınıfları seçmek için MarkaRadar blogundaki Nice Sınıfları rehberimize göz atabilirsiniz.'
+  },
+  {
+    q: 'Marka tescili olmadan satış yapmak riskli mi?',
+    a: 'Evet, oldukça risklidir. Tescilsiz marka kullanımı, başkalarının önceden tescil ettiği markalarla çakışma riski taşır. Bu durum haksız rekabet, marka ihlali ve tazminat davalarına yol açabilir. Ayrıca markanızı başkaları tescil edebilir ve sizin kullanımınızı engelleyebilir.'
+  },
+  {
+    q: 'Ödeme güvenli mi?',
+    a: 'Evet, tüm ödemeler PayTRnin PCI DSS uyumlu, 256-bit SSL şifrelemeli ve 3D Secure destekli güvenli ödeme altyapısı üzerinden işlenir. Kart bilgileriniz hiçbir şekilde MarkaRadar sunucularında saklanmaz.'
+  },
+  {
+    q: 'Analiz geçmişime nasıl ulaşabilirim?',
+    a: 'Giriş yaptıktan sonra Dashboard sayfasından tüm analiz geçmişinizi görüntüleyebilir, detaylarına bakabilir ve PDF raporlarını tekrar indirebilirsiniz. Ücretsiz hesap oluşturarak bu özelliği kullanmaya başlayabilirsiniz.'
+  },
+  {
+    q: 'Marka itiraz savunma dosyası nedir?',
+    a: 'Markanıza yapılan haksız itirazlara karşı hukuki temelli savunma dosyası hazırlayan bir hizmettir. AI destekli detaylı analiz ve argümanlar içerir. Ancak bu dosya yapay zeka tarafından oluşturulmuş ön bir taslaktır; bir hukuk uzmanına danışmadan doğrudan kullanmayınız.'
+  },
+  {
+    q: 'Uluslararası marka tescili yapabilir miyim?',
+    a: 'Evet, Madrid Protokolü kapsamında tek bir başvuruyla birden fazla ülkede marka koruması elde edebilirsiniz. Türkiyedeki tescilli markanız temel alınarak WIPO üzerinden uluslararası başvuru yapılır. Detaylar için blogumuzdaki uluslararası marka tescil rehberine göz atabilirsiniz.'
+  },
+];
+
+function LandingFAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  return (
+    <div className="space-y-3">
+      {landingFaqs.map((faq, i) => (
+        <div key={i} className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+          <button
+            onClick={() => setOpenIndex(openIndex === i ? null : i)}
+            className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 transition-colors"
+          >
+            <span className="text-sm font-semibold text-slate-800 pr-4">{faq.q}</span>
+            {openIndex === i ? (
+              <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0" />
+            ) : (
+              <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
+            )}
+          </button>
+          {openIndex === i && (
+            <div className="px-5 pb-4">
+              <p className="text-sm text-slate-600 leading-relaxed">{faq.a}</p>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
