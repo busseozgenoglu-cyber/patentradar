@@ -1,36 +1,60 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, FileSearch, Activity, Crown, TrendingUp, FileText } from 'lucide-react';
+import { FileSearch, Activity, TrendingUp, FileText, CreditCard, BarChart3 } from 'lucide-react';
 import { authService } from '@/services/authService';
 import { storageService } from '@/services/storageService';
+import { paymentService } from '@/services/paymentService';
 import { useSEO } from '@/hooks/useSEO';
 
 export function Admin() {
   useSEO('Admin Panel', 'Yönetim paneli.');
   const navigate = useNavigate();
   const analyses = storageService.getAnalyses();
-  
+  const guestAnalyses = storageService.getGuestAnalyses();
+  const payments = paymentService.getPayments();
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     if (!authService.isAuthenticated()) {
       navigate('/login');
       return;
     }
     const user = authService.getCurrentUser();
-    // Only allow admin access for demo user or explicit admin flag
-    if (!user || (user.email !== 'demo@markaradar.com' && !user.plan)) {
+    if (!user || (user.email !== 'demo@markaradar.com' && user.plan !== 'pro')) {
       navigate('/dashboard');
     }
   }, [navigate]);
 
+  const totalAnalyses = analyses.length;
+  const totalGuestAnalyses = guestAnalyses.length;
+  // const totalPayments = payments.length;
+  const totalRevenue = payments.reduce((acc, p) => acc + p.amount, 0);
+
+  const today = new Date().toISOString().split('T')[0];
+  const todayAnalyses = analyses.filter(a => a.createdAt.startsWith(today)).length;
+  const todayPayments = payments.filter(p => p.createdAt.startsWith(today)).length;
+
+  const allAnalyses = [...analyses, ...guestAnalyses].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+  const recentActivity = allAnalyses.slice(0, 8);
+
   const stats = [
-    { label: 'Toplam Kullanıcı', value: '1,248', icon: Users, color: 'bg-blue-500' },
-    { label: 'Toplam Analiz', value: analyses.length > 0 ? analyses.length.toString() : '3,847', icon: FileSearch, color: 'bg-emerald-500' },
-    { label: 'Bugün Aktif', value: '156', icon: Activity, color: 'bg-amber-500' },
-    { label: 'Pro Kullanıcı', value: '342', icon: Crown, color: 'bg-indigo-500' },
+    { label: 'Kayıtlı Analiz', value: totalAnalyses.toString(), icon: FileSearch, color: 'bg-blue-500' },
+    { label: 'Misafir Analiz', value: totalGuestAnalyses.toString(), icon: BarChart3, color: 'bg-indigo-500' },
+    { label: 'Toplam Ödeme', value: `${totalRevenue.toLocaleString('tr-TR')} TL`, icon: CreditCard, color: 'bg-emerald-500' },
+    { label: 'Bugün Aktif', value: `${todayAnalyses + todayPayments}`, icon: Activity, color: 'bg-amber-500' },
   ];
 
-  const recentActivity = analyses.slice(0, 5);
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center pt-16">
+        <div className="animate-pulse text-slate-400">Yükleniyor...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-16">
@@ -42,7 +66,7 @@ export function Admin() {
           className="mb-8"
         >
           <h1 className="text-3xl font-bold text-slate-900">Yönetim Paneli</h1>
-          <p className="text-slate-600 mt-1">Platform kullanım istatistikleri.</p>
+          <p className="text-slate-600 mt-1">Platform kullanım istatistikleri ve son aktiviteler.</p>
         </motion.div>
 
         {/* Stats Grid */}
@@ -65,6 +89,46 @@ export function Admin() {
             </div>
           ))}
         </motion.div>
+
+        {/* Payment History */}
+        {payments.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="mb-8"
+          >
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Son Ödemeler</h2>
+            <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+              <div className="hidden sm:grid sm:grid-cols-12 gap-4 px-6 py-3 bg-slate-50 text-xs font-bold text-slate-700 uppercase tracking-wider">
+                <div className="col-span-3">Tarih</div>
+                <div className="col-span-5">Açıklama</div>
+                <div className="col-span-2">Tür</div>
+                <div className="col-span-2 text-right">Tutar</div>
+              </div>
+              <div className="divide-y divide-slate-100">
+                {payments.slice(0, 5).map((p) => (
+                  <div key={p.id} className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 px-6 py-4 items-center">
+                    <div className="sm:col-span-3 text-sm text-slate-600">
+                      {new Date(p.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </div>
+                    <div className="sm:col-span-5">
+                      <p className="text-sm font-medium text-slate-800 truncate">{p.description}</p>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${
+                        p.type === 'analysis' ? 'bg-blue-50 text-blue-700' : 'bg-amber-50 text-amber-700'
+                      }`}>
+                        {p.type === 'analysis' ? 'Analiz' : 'Savunma'}
+                      </span>
+                    </div>
+                    <div className="sm:col-span-2 text-sm font-bold text-slate-900 text-right">{p.amount} TL</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Recent Activity */}
         <motion.div

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, LogOut, LayoutDashboard, Search, User as LucideUser, Shield, Gavel } from 'lucide-react';
+import { Menu, X, ChevronDown, LogOut, LayoutDashboard, Search, User as LucideUser, Shield, Gavel, HelpCircle, Info } from 'lucide-react';
 import { authService } from '@/services/authService';
 import type { User } from '@/types';
 
@@ -98,6 +98,12 @@ export function Navbar() {
               Fiyatlandırma
             </Link>
             <Link
+              to="/blog"
+              className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+            >
+              Blog
+            </Link>
+            <Link
               to="/savunma"
               className="text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors flex items-center gap-1"
             >
@@ -124,10 +130,11 @@ export function Navbar() {
                 {dropdownOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setDropdownOpen(false)} />
-                    <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50">
+                    <div className="absolute right-0 top-full mt-1 w-52 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50">
                       <Link
                         to="/dashboard"
                         className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                        onClick={() => setDropdownOpen(false)}
                       >
                         <LayoutDashboard className="w-4 h-4" />
                         Dashboard
@@ -135,13 +142,30 @@ export function Navbar() {
                       <Link
                         to="/analyze"
                         className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                        onClick={() => setDropdownOpen(false)}
                       >
                         <Search className="w-4 h-4" />
                         Yeni Analiz
                       </Link>
+                      <Link
+                        to="/odeme"
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        <Shield className="w-4 h-4" />
+                        Ödemelerim
+                      </Link>
+                      <Link
+                        to="/yardim-merkezi"
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        <HelpCircle className="w-4 h-4" />
+                        Yardım
+                      </Link>
                       <div className="border-t border-slate-100 my-1" />
                       <button
-                        onClick={handleLogout}
+                        onClick={() => { setDropdownOpen(false); handleLogout(); }}
                         className="flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 w-full transition-colors"
                       >
                         <LogOut className="w-4 h-4" />
@@ -183,7 +207,7 @@ export function Navbar() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/30" onClick={() => setMobileOpen(false)} />
-          <div className="absolute right-0 top-0 bottom-0 w-72 bg-white shadow-2xl p-6 flex flex-col gap-1">
+          <div className="absolute right-0 top-0 bottom-0 w-72 bg-white shadow-2xl p-6 flex flex-col gap-1 overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <span className="text-lg font-bold text-slate-900">Menü</span>
               <button onClick={() => setMobileOpen(false)} className="p-2 hover:bg-slate-100 rounded-lg">
@@ -211,12 +235,42 @@ export function Navbar() {
               Fiyatlandırma
             </Link>
             <Link
+              to="/blog"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
+            >
+              Blog
+            </Link>
+            <Link
               to="/savunma"
               onClick={() => setMobileOpen(false)}
               className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
             >
               <Gavel className="w-4 h-4" />
               İtiraz Savunma
+            </Link>
+            <Link
+              to="/hakkimizda"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
+            >
+              <Info className="w-4 h-4" />
+              Hakkımızda
+            </Link>
+            <Link
+              to="/yardim-merkezi"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
+            >
+              <HelpCircle className="w-4 h-4" />
+              Yardım Merkezi
+            </Link>
+            <Link
+              to="/iletisim"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
+            >
+              İletişim
             </Link>
             
             <div className="border-t border-slate-100 my-3" />

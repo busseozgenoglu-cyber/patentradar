@@ -5,9 +5,35 @@ const cors = require('cors');
 const axios = require('axios');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+// Security: Restrict CORS to known origins in production
+const allowedOrigins = process.env.NODE_ENV === 'production'
+  ? ['https://patentradar.pro', 'https://www.patentradar.pro', 'https://markaradar.com', 'https://www.markaradar.com']
+  : ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:5173'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS policy: Origin not allowed'));
+    }
+  },
+  credentials: true,
+}));
+
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+
+// Security headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
 
 const {
   PAYTR_MERCHANT_ID,
@@ -19,6 +45,47 @@ const {
 if (!PAYTR_MERCHANT_ID || !PAYTR_MERCHANT_KEY || !PAYTR_MERCHANT_SALT) {
   console.error('ERROR: PayTR credentials missing in .env file');
   console.error('Required: PAYTR_MERCHANT_ID, PAYTR_MERCHANT_KEY, PAYTR_MERCHANT_SALT');
+}
+
+// Simple in-memory rate limiter
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX = 30; // 30 requests per minute
+
+function rateLimit(req, res, next) {
+  const ip = req.ip || req.connection.remoteAddress || 'unknown';
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip) || { count: 0, resetAt: now + RATE_LIMIT_WINDOW };
+
+  if (now > entry.resetAt) {
+    entry.count = 0;
+    entry.resetAt = now + RATE_LIMIT_WINDOW;
+  }
+
+  entry.count++;
+  rateLimitMap.set(ip, entry);
+
+  if (entry.count > RATE_LIMIT_MAX) {
+    return res.status(429).json({ status: 'error', error: 'Çok fazla istek. Lütfen biraz bekleyin.' });
+  }
+
+  next();
+}
+
+app.use(rateLimit);
+
+// Input validators
+function isValidEmail(email) {
+  return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidAmount(amount) {
+  const num = parseFloat(amount);
+  return !isNaN(num) && num > 0 && num <= 100000;
+}
+
+function isValidString(str, maxLen = 500) {
+  return typeof str === 'string' && str.length > 0 && str.length <= maxLen;
 }
 
 /**
@@ -43,8 +110,24 @@ app.post('/api/paytr-token', async (req, res) => {
       lang = 'tr'
     } = req.body;
 
-    if (!email || !payment_amount || !merchant_oid || !user_name) {
-      return res.status(400).json({ error: 'Eksik alanlar: email, payment_amount, merchant_oid, user_name zorunludur.' });
+    // Validation
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ error: 'Geçersiz e-posta adresi.' });
+    }
+    if (!isValidString(user_name, 100)) {
+      return res.status(400).json({ error: 'Kullanıcı adı gereklidir (max 100 karakter).' });
+    }
+    if (!isValidAmount(payment_amount)) {
+      return res.status(400).json({ error: 'Geçersiz ödeme tutarı.' });
+    }
+    if (!isValidString(merchant_oid, 64)) {
+      return res.status(400).json({ error: 'Geçersiz sipariş numarası.' });
+    }
+    if (!isValidString(user_ip, 45)) {
+      return res.status(400).json({ error: 'Geçersiz IP adresi.' });
+    }
+    if (!isValidString(merchant_ok_url, 500) || !isValidString(merchant_fail_url, 500)) {
+      return res.status(400).json({ error: 'Geçersiz dönüş URL\'leri.' });
     }
 
     // User basket (required by PayTR)
@@ -57,7 +140,6 @@ app.post('/api/paytr-token', async (req, res) => {
     const amountInKurus = Math.round(parseFloat(payment_amount) * 100).toString();
 
     // Build hash string according to PayTR docs
-    // Format: merchant_id + user_ip + merchant_oid + email + payment_amount + user_basket + merchant_ok_url + merchant_fail_url + timeout_limit + debug_on + test_mode + lang + merchant_salt
     const hashStr = `${PAYTR_MERCHANT_ID}${user_ip}${merchant_oid}${email}${amountInKurus}${user_basket_json}${merchant_ok_url}${merchant_fail_url}${timeout_limit}${debug_on}${test_mode}${lang}${PAYTR_MERCHANT_SALT}`;
     const paytrToken = crypto.createHmac('sha256', PAYTR_MERCHANT_KEY).update(hashStr).digest('base64');
 
@@ -117,6 +199,10 @@ app.post('/api/paytr-token', async (req, res) => {
 app.post('/api/paytr-callback', async (req, res) => {
   const { merchant_oid, status, total_amount, hash, payment_type, payment_amount, currency } = req.body;
 
+  if (!merchant_oid || !hash) {
+    return res.status(400).send('Missing fields');
+  }
+
   // Verify callback hash
   const callbackHashStr = `${merchant_oid}${PAYTR_MERCHANT_SALT}${status}${total_amount}${currency}${PAYTR_MERCHANT_SALT}`;
   const callbackToken = crypto.createHmac('sha256', PAYTR_MERCHANT_KEY).update(callbackHashStr).digest('base64');
@@ -148,8 +234,23 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     paytr_configured: !!(PAYTR_MERCHANT_ID && PAYTR_MERCHANT_KEY && PAYTR_MERCHANT_SALT),
-    test_mode: PAYTR_TEST_MODE
+    test_mode: PAYTR_TEST_MODE,
+    timestamp: new Date().toISOString()
   });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ status: 'error', error: 'Endpoint bulunamadı.' });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  if (err.message && err.message.includes('CORS')) {
+    return res.status(403).json({ status: 'error', error: 'Erişim reddedildi.' });
+  }
+  res.status(500).json({ status: 'error', error: 'Bir hata oluştu.' });
 });
 
 const PORT = process.env.BACKEND_PORT || 3001;

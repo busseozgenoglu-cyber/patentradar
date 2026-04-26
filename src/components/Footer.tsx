@@ -49,14 +49,27 @@ export function Footer() {
                   Fiyatlandırma
                 </Link>
               </li>
+              <li>
+                <Link to="/savunma" className="text-sm hover:text-white transition-colors">
+                  İtiraz Savunma
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-semibold text-sm mb-4">Kaynaklar</h4>
             <ul className="space-y-2.5">
-              <li><span className="text-sm text-slate-600 cursor-not-allowed">Blog (yakında)</span></li>
-              <li><span className="text-sm text-slate-600 cursor-not-allowed">Yardım Merkezi (yakında)</span></li>
+              <li>
+                <Link to="/blog" className="text-sm hover:text-white transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link to="/yardim-merkezi" className="text-sm hover:text-white transition-colors">
+                  Yardım Merkezi
+                </Link>
+              </li>
               <li>
                 <Link to="/gizlilik" className="text-sm hover:text-white transition-colors">
                   Gizlilik Politikası
@@ -71,8 +84,18 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4">İletişim</h4>
+            <h4 className="text-white font-semibold text-sm mb-4">Şirket</h4>
             <ul className="space-y-2.5">
+              <li>
+                <Link to="/hakkimizda" className="text-sm hover:text-white transition-colors">
+                  Hakkımızda
+                </Link>
+              </li>
+              <li>
+                <Link to="/iletisim" className="text-sm hover:text-white transition-colors">
+                  İletişim
+                </Link>
+              </li>
               <li>
                 <a href="mailto:info@markaradar.com" className="text-sm hover:text-white transition-colors">
                   info@markaradar.com
